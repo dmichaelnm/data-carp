@@ -1,1 +1,55 @@
-// app global css in SCSS form
+@import 'quasar.variables';
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: $text-color-light;
+}
+
+@media (min-width: 1920px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 2560px) {
+  html, body {
+    font-size: 16px;
+  }
+}
+
+body.body--dark {
+  color: $text-color-dark;
+}
+
+.q-field--outlined .q-field__control:before {
+  border-color: $border-color-light;
+}
+
+.body--dark .q-field--outlined .q-field__control:before {
+  border-color: $border-color-dark;
+}
+
+.q-field--outlined .q-field__control:hover:before {
+  border-color: $border-color-hover-light;
+}
+
+.body--dark .q-field--outlined .q-field__control:hover:before {
+  border-color: $border-color-hover-dark;
+}
+
+.q-field--outlined.q-field--highlighted .q-field__control:after {
+  border-color: $border-color-focus-light;
+}
+
+.body--dark .q-field--outlined.q-field--highlighted .q-field__control:after {
+  border-color: $border-color-focus-dark;
+}
+
+.q-field--highlighted .q-field__label {
+  color: $text-color-label-focus-light;
+}
+
+.body--dark .q-field--highlighted .q-field__label {
+  color: $text-color-label-focus-dark;
+}

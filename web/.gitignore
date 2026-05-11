@@ -38,3 +38,10 @@ yarn-error.log*
 
 # VS Code editor preferences
 /.vscode
+
+# Secret files
+/src/script/secret
+
+# Compiled CSS artifacts
+/src/css/*.map
+/src/css/*.css

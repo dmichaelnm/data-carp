@@ -70,7 +70,7 @@
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { onBeforeMount, ref } from 'vue';
-import { languageOptions } from 'src/script/ui/options';
+import { languageOptions, getDefaultLanguage } from 'src/script/ui/options';
 import AppButton from 'components/controls/AppButton.vue';
 import AppSelect from 'components/controls/AppSelect.vue';
 
@@ -86,7 +86,7 @@ defineProps<{
 onBeforeMount(() => {
   const darkMode = quasar.cookies.get('darkMode') === 'true';
   quasar.dark.set(darkMode);
-  language.value = quasar.cookies.get('language') ?? 'en-US';
+  language.value = quasar.cookies.get('language') ?? getDefaultLanguage();
   i18n.locale.value = language.value;
 });
 

@@ -36,6 +36,10 @@ export default {
         'To create a new account, please fill out the fields below. Please note that no account may currently exist for ' +
         'the specified email address. Once the account has been successfully created, an authorized administrator must ' +
         'activate it before you can log in to the system.',
+      error: {
+        passwordConfirmationInvalid:
+          'The password confirmation has failed.',
+      },
     },
     forgotPassword: {
       button: 'Forgot Password',

@@ -21,15 +21,14 @@
     "quasar-extras-svg-icons": "^2.2.0",
     "vue": "^3.4.18",
     "vue-router": "^4.0.12",
-    "firebase": "^12.13.0",
-    "firebase-admin": "^13.9.0"
+    "firebase": "^12.13.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
     "vite-plugin-checker": "^0.8.0",
     "vue-tsc": "^2.0.29",
-    "eslint": "^10.3.0",
+    "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.0.0",
     "eslint-config-prettier": "^8.1.0",
     "prettier": "^2.5.1",

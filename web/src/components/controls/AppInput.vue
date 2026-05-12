@@ -7,6 +7,8 @@
     :spellcheck="_spellcheck"
     :type="_type"
     :rules="[(value) => !!value || !_mandatory || $t('error.inputEmpty')]"
+    :error="error !== undefined && error !== null && error.trim().length > 0"
+    :error-message="error"
     lazy-rules="ondemand"
     dense
     outlined
@@ -38,6 +40,7 @@ const props = defineProps<{
   modelValue: TModelValue;
   autoComplete?: TAutoComplete;
   autoFocus?: boolean;
+  error?: string;
   label?: string;
   mandatory?: boolean;
   spellcheck?: boolean;

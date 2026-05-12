@@ -2,7 +2,7 @@ import { IAccount } from 'src/script/backend/api/IAccount';
 
 export interface IAccountService {
   onAuthenticationStateChanged(
-    callback: (account: IAccountService | null) => void
+    callback: (account: IAccount | null) => void
   ): void;
 
   createAccount(

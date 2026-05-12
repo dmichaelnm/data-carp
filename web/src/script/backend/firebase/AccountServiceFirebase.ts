@@ -11,7 +11,7 @@ import { AccountFirebase } from 'src/script/backend/firebase/AccountFirebase';
 
 export class AccountServiceFirebase implements IAccountService {
   onAuthenticationStateChanged(
-    callback: (account: IAccountService | null) => void
+    callback: (account: IAccount | null) => void
   ) {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (user === null) {

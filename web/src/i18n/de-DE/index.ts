@@ -39,13 +39,16 @@ export default {
         'Um ein neues Konto zu erstellen, füllen Sie die untenstehenden Felder aus. Beachten Sie, dass für die ' +
         'angegebene Email-Adresse noch kein Konto existieren darf. Nachdem das Konto erfolgreich erstellt wurde, muss ' +
         'noch ein berechtigter Administrator das Konto freischalten, bevor Sie sich am System anmelden können.',
-      error: {
-        passwordConfirmationInvalid:
-          'Die Kennwortbestätigung ist fehlgeschlagen.',
-      },
     },
     forgotPassword: {
       button: 'Kennwort vergessen',
+    },
+    error: {
+      passwordConfirmInvalid: 'Die Kennwortbestätigung ist fehlgeschlagen.',
+      emailInvalid: 'Die angegebene Email-Adresse ist ungültig.',
+      emailAlreadyExists:
+        'Es existiert bereits ein Konto mit der angegebenen Email-Adresse.',
+      passwordWeak: 'Das angegebene Kennwort ist zu schwach.',
     },
   },
 };

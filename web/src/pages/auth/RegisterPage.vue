@@ -21,7 +21,12 @@
         </div>
         <div class="row q-col-gutter-x-md">
           <div class="col">
-            <app-input v-model="email" :label="$t('label.email')" mandatory />
+            <app-input
+              v-model="email"
+              :label="$t('label.email')"
+              :error="emailError"
+              mandatory
+            />
           </div>
         </div>
         <div class="row q-col-gutter-x-md">
@@ -29,6 +34,7 @@
             <app-input
               v-model="password"
               :label="$t('label.password')"
+              :error="passwordError"
               type="password"
               mandatory
             />
@@ -71,6 +77,7 @@ import { useRunTask } from 'src/script/ui/composable';
 import { Backend } from 'src/script/backend/Backend';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { FirebaseError } from 'firebase/app';
 
 const runTask = useRunTask();
 const quasar = useQuasar();
@@ -79,28 +86,45 @@ const i18n = useI18n();
 const firstName = ref('');
 const lastName = ref('');
 const email = ref('');
+const emailError = ref('');
 const password = ref('');
+const passwordError = ref('');
 const confirmPassword = ref('');
 const confirmPasswordError = ref('');
 
 function onSubmit(): void {
   if (password.value !== confirmPassword.value) {
-    confirmPasswordError.value = i18n.t(
-      'auth.register.error.passwordConfirmationInvalid'
-    );
+    confirmPasswordError.value = i18n.t('auth.error.passwordConfirmInvalid');
     return;
   }
 
-  runTask(async () => {
-    await Backend.accountService.createAccount(
-      firstName.value,
-      lastName.value,
-      email.value,
-      password.value,
-      quasar.dark.isActive,
-      i18n.locale.value
-    );
-    quasar.cookies.set('email', email.value, { expires: 365 });
-  });
+  runTask(
+    async () => {
+      await Backend.accountService.createAccount(
+        firstName.value,
+        lastName.value,
+        email.value,
+        password.value,
+        quasar.dark.isActive,
+        i18n.locale.value
+      );
+      quasar.cookies.set('email', email.value, { expires: 365 });
+    },
+    (error) => {
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/invalid-email') {
+          emailError.value = i18n.t('auth.error.emailInvalid');
+          return true;
+        } else if (error.code === 'auth/email-already-in-use') {
+          emailError.value = i18n.t('auth.error.emailAlreadyExists');
+          return true;
+        } else if (error.code === 'auth/weak-password') {
+          passwordError.value = i18n.t('auth.error.passwordWeak');
+          return true;
+        }
+      }
+      return false;
+    }
+  );
 }
 </script>

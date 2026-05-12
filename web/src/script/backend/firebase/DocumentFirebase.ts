@@ -1,5 +1,6 @@
 import { EDocumentType, IDocument } from 'src/script/backend/api/IDocument';
 import { IDocumentData } from 'src/script/backend/api/IDocumentData';
+import { FirebaseError } from 'firebase/app';
 import {
   DocumentData,
   addDoc,
@@ -27,10 +28,10 @@ export abstract class DocumentFirebase<D extends IDocumentData>
     const docRef = doc(firebaseStore, type, id);
     const document = await getDoc(docRef);
     if (!document.exists()) {
-      throw {
-        code: 'firebase/document-not-found',
-        message: `The document with ID "${id}" does not exist`,
-      };
+      throw new FirebaseError(
+        'firebase/document-not-found',
+        `The document with ID "${id}" does not exist`
+      );
     }
     const data = document.data() as D;
     return creator(data);

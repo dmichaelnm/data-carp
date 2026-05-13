@@ -49,13 +49,20 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import AppButton from 'components/controls/AppButton.vue';
 import AppInput from 'components/controls/AppInput.vue';
 import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
-import { ref } from 'vue';
-import AppButton from 'components/controls/AppButton.vue';
+
+const quasar = useQuasar();
 
 const email = ref('');
 const password = ref('');
+
+onBeforeMount(() => {
+  email.value = quasar.cookies.get('email') ?? '';
+});
 
 function onSubmit() {
   console.log('submit');

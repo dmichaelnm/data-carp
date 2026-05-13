@@ -3,12 +3,21 @@
 export default {
   button: {
     back: 'Zurück',
+    close: 'Schließen',
+  },
+  dialog: {
+    unexpected: {
+      title: 'Unerwarteter Fehler',
+      message:
+        'Es ist ein unerwarteter Fehler aufgetreten. Genauere Informationen finden Sie in den Details.',
+    },
   },
   error: {
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
   },
   label: {
     confirmPassword: 'Kennwort bestätigen',
+    details: 'Details',
     email: 'Email-Adresse',
     firstName: 'Vorname',
     language: 'Sprache',
@@ -39,6 +48,14 @@ export default {
         'Um ein neues Konto zu erstellen, füllen Sie die untenstehenden Felder aus. Beachten Sie, dass für die ' +
         'angegebene Email-Adresse noch kein Konto existieren darf. Nachdem das Konto erfolgreich erstellt wurde, muss ' +
         'noch ein berechtigter Administrator das Konto freischalten, bevor Sie sich am System anmelden können.',
+      dialog: {
+        success: {
+          title: 'Konto erfolgreich erstellt',
+          message:
+            'Das Konto wurde erfolgreich erstellt. Bitte warten Sie mit der Anmeldung, bis ein Administrator das ' +
+            'Konto freigeschaltet hat.',
+        },
+      },
     },
     forgotPassword: {
       button: 'Kennwort vergessen',

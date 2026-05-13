@@ -69,19 +69,23 @@
 </template>
 
 <script setup lang="ts">
-import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
 import { ref } from 'vue';
-import AppInput from 'components/controls/AppInput.vue';
-import AppButton from 'components/controls/AppButton.vue';
 import { useRunTask } from 'src/script/ui/composable';
-import { Backend } from 'src/script/backend/Backend';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useMessageDialog } from 'src/script/ui/messageDialog';
+import { useRouter } from 'vue-router';
+import { Backend } from 'src/script/backend/Backend';
 import { FirebaseError } from 'firebase/app';
+import AppButton from 'components/controls/AppButton.vue';
+import AppInput from 'components/controls/AppInput.vue';
+import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
 
 const runTask = useRunTask();
 const quasar = useQuasar();
 const i18n = useI18n();
+const messageDialog = useMessageDialog();
+const router = useRouter();
 
 const firstName = ref('');
 const lastName = ref('');
@@ -109,6 +113,14 @@ function onSubmit(): void {
         i18n.locale.value
       );
       quasar.cookies.set('email', email.value, { expires: 365 });
+      messageDialog(
+        'success',
+        i18n.t('auth.register.dialog.success.title'),
+        i18n.t('auth.register.dialog.success.message'),
+        () => {
+          router.push('/auth/login');
+        }
+      );
     },
     (error) => {
       if (error instanceof FirebaseError) {

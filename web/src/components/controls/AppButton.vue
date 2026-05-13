@@ -7,6 +7,7 @@
     :type="_type"
     :round="_buttonStyle === 'icon'"
     :to="to"
+    :color="_color"
     dense
     no-caps
     @click="emit('click')"
@@ -19,7 +20,6 @@
 @import 'src/css/quasar.variables.scss';
 
 .button-push {
-  background-color: $primary;
   border-radius: 8px;
   color: white;
   font-size: 1rem;
@@ -42,9 +42,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-
-type TButtonStyle = 'push' | 'link' | 'icon';
-type TButtonType = 'button' | 'submit' | 'reset';
+import { TButtonStyle, TButtonType } from 'src/script/ui/types';
 
 const props = defineProps<{
   buttonStyle?: TButtonStyle;
@@ -52,13 +50,15 @@ const props = defineProps<{
   label?: string;
   to?: string;
   tooltip?: string;
-  type?: TButtonType;
+  type?: TButtonType | undefined;
+  color?: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
+const _color = computed(() => props.color ?? 'primary');
 const _buttonStyle = computed(() => props.buttonStyle ?? 'push');
 const _type = computed(() => props.type ?? 'button');
 </script>

@@ -1,12 +1,21 @@
 export default {
   button: {
     back: 'Back',
+    close: 'Close',
+  },
+  dialog: {
+    unexpected: {
+      title: 'Unexpected Error',
+      message:
+        'An unexpected error occurred. For more details, please see the details.',
+    },
   },
   error: {
     inputEmpty: 'The input field cannot be empty.',
   },
   label: {
     confirmPassword: 'Confirm Password',
+    details: 'Details',
     email: 'Email Address',
     firstName: 'First Name',
     language: 'Language',
@@ -36,6 +45,14 @@ export default {
         'To create a new account, please fill out the fields below. Please note that no account may currently exist for ' +
         'the specified email address. Once the account has been successfully created, an authorized administrator must ' +
         'activate it before you can log in to the system.',
+      dialog: {
+        success: {
+          title: 'Account created successfully',
+          message:
+            'The account was created successfully. Please wait until an authorized administrator activates it before ' +
+            'you try to sign in.',
+        },
+      },
     },
     forgotPassword: {
       button: 'Forgot Password',

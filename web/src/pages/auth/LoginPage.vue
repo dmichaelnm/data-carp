@@ -59,8 +59,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Backend } from 'src/script/backend/Backend';
 import { FirebaseError } from 'firebase/app';
-import AppInput from 'components/controls/AppInput.vue';
-import AppButton from 'components/controls/AppButton.vue';
+import AppInput from 'components/application/controls/AppInput.vue';
+import AppButton from 'components/application/controls/AppButton.vue';
 import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
 
 const quasar = useQuasar();

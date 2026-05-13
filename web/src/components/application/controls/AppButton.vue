@@ -17,7 +17,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import 'src/css/quasar.variables.scss';
+@import '../../../css/quasar.variables';
 
 .button-push {
   border-radius: 8px;

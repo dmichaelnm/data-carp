@@ -45,8 +45,8 @@ import { useMessageDialog } from 'src/script/ui/messageDialog';
 import { useRouter } from 'vue-router';
 import { Backend } from 'src/script/backend/Backend';
 import { FirebaseError } from 'firebase/app';
-import AppButton from 'components/controls/AppButton.vue';
-import AppInput from 'components/controls/AppInput.vue';
+import AppButton from 'components/application/controls/AppButton.vue';
+import AppInput from 'components/application/controls/AppInput.vue';
 import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
 
 const i18n = useI18n();

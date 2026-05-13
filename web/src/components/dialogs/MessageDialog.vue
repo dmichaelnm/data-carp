@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { messageDialogOptions } from 'src/script/ui/messageDialog';
-import AppDialog from 'components/controls/AppDialog.vue';
+import AppDialog from 'components/application/AppDialog.vue';
 
 const props = defineProps<{
   modelValue: boolean;

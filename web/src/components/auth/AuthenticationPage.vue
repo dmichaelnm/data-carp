@@ -65,8 +65,8 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { onBeforeMount, ref } from 'vue';
 import { languageOptions, getDefaultLanguage } from 'src/script/ui/options';
-import AppButton from 'components/controls/AppButton.vue';
-import AppSelect from 'components/controls/AppSelect.vue';
+import AppButton from 'components/application/controls/AppButton.vue';
+import AppSelect from 'components/application/controls/AppSelect.vue';
 
 const quasar = useQuasar();
 const i18n = useI18n();

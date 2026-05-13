@@ -1,13 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
     <message-dialog v-model="messageDialogOptions.visible" />
-    <q-footer class="footer">
-      <div class="text-right text-hint">
-        &copy; Copyright {{ new Date().getFullYear() }} Dirk Michael / Version
-        {{ applicationVersion.version }} (Build Date:
-        {{ applicationVersion.buildDate }})
-      </div>
-    </q-footer>
+    <app-footer />
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -23,15 +17,10 @@
 .body--dark .layout {
   background: linear-gradient(to bottom right, black, $primary);
 }
-
-.footer {
-  background-color: transparent;
-  padding: 4px 16px;
-}
 </style>
 
 <script setup lang="ts">
-import { applicationVersion } from 'src/script/version';
 import { messageDialogOptions } from 'src/script/ui/messageDialog';
 import MessageDialog from 'components/dialogs/MessageDialog.vue';
+import AppFooter from 'components/application/AppFooter.vue';
 </script>

@@ -17,4 +17,8 @@ export interface IAccountService {
   getAccount(id: string): Promise<IAccount>;
 
   sendPasswordResetEmail(email: string): Promise<void>;
+
+  signIn(email: string, password: string): Promise<IAccount>;
+
+  signOut(): Promise<void>;
 }

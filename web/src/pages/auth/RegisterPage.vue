@@ -97,6 +97,10 @@ const confirmPassword = ref('');
 const confirmPasswordError = ref('');
 
 function onSubmit(): void {
+  emailError.value = '';
+  passwordError.value = '';
+  confirmPasswordError.value = '';
+
   if (password.value !== confirmPassword.value) {
     confirmPasswordError.value = i18n.t('auth.error.passwordConfirmInvalid');
     return;

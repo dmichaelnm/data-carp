@@ -17,6 +17,8 @@ onBeforeMount(() => {
   Backend.accountService.onAuthenticationStateChanged((account) => {
     if (account === null) {
       router.push('/auth/login');
+    } else {
+      console.log('account', account);
     }
   });
 });

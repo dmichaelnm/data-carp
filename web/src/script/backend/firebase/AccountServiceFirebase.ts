@@ -2,21 +2,29 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
   updateProfile,
 } from 'firebase/auth';
-import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { firebaseAuth } from 'boot/firebase';
+import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
 import { AccountFirebase } from 'src/script/backend/firebase/AccountFirebase';
+import { Backend } from 'src/script/backend/Backend';
 
 export class AccountServiceFirebase implements IAccountService {
-  onAuthenticationStateChanged(
-    callback: (account: IAccount | null) => void
-  ) {
-    onAuthStateChanged(firebaseAuth, (user) => {
+  onAuthenticationStateChanged(callback: (account: IAccount | null) => void) {
+    onAuthStateChanged(firebaseAuth, async (user) => {
       if (user === null) {
         callback(null);
+      } else {
+        const account = await this.getAccount(user.uid);
+        if (!account.data.state.active) {
+          await Backend.accountService.signOut();
+          callback(null);
+        }
+        callback(account);
       }
     });
   }
@@ -47,6 +55,9 @@ export class AccountServiceFirebase implements IAccountService {
         darkMode: darkMode,
         language: language,
       },
+      state: {
+        active: false,
+      },
       meta: {
         created: {
           by: `${firstName} ${lastName}`,
@@ -65,5 +76,18 @@ export class AccountServiceFirebase implements IAccountService {
 
   async sendPasswordResetEmail(email: string): Promise<void> {
     await sendPasswordResetEmail(firebaseAuth, email);
+  }
+
+  async signIn(email: string, password: string): Promise<IAccount> {
+    const credentials = await signInWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    return AccountFirebase.getAccount(credentials.user.uid);
+  }
+
+  async signOut(): Promise<void> {
+    await signOut(firebaseAuth);
   }
 }

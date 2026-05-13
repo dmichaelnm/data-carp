@@ -80,6 +80,9 @@ export default {
       emailAlreadyExists:
         'Es existiert bereits ein Konto mit der angegebenen Email-Adresse.',
       passwordWeak: 'Das angegebene Kennwort ist zu schwach.',
+      invalidCredentials: 'Die angegebenen Anmeldedaten sind ungültig.',
+      accountNotActive: 'Das Konto ist nicht aktiviert.',
+      tooManyRequests: 'Zu viele Anmeldeversuche. Bitte versuchen Sie es später noch einmal.',
     },
   },
 };

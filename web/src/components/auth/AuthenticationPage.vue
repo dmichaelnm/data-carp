@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center auth-page">
+  <q-page class="flex flex-center">
     <div class="auth-frame">
       <div class="auth-frame-padding-bottom auth-frame-message" v-if="message">
         {{ message }}
@@ -38,12 +38,6 @@
 
 <style lang="scss" scoped>
 @import 'src/css/quasar.variables.scss';
-.auth-page {
-  background: linear-gradient(to bottom right, white, $primary);
-}
-.body--dark .auth-page {
-  background: linear-gradient(to bottom right, black, $primary);
-}
 
 .auth-frame {
   width: 600px;
@@ -57,10 +51,10 @@
 }
 
 .auth-frame-padding-top {
-  padding-top: 8px;
+  padding-top: 16px;
 }
 .auth-frame-padding-bottom {
-  padding-bottom: 8px;
+  padding-bottom: 16px;
 }
 .auth-frame-message {
 }

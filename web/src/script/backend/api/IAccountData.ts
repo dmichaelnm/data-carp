@@ -9,5 +9,9 @@ export interface IAccountData extends IDocumentData {
   preference: {
     darkMode: boolean;
     language: string;
+  },
+  state: {
+    active: boolean;
+    lastLogin?: Date;
   }
 }

@@ -77,6 +77,9 @@ export default {
       emailAlreadyExists:
         'There already exists an account with the specified email address.',
       passwordWeak: 'The specified password is too weak.',
+      invalidCredentials: 'The provided login credentials are invalid.',
+      accountNotActive: 'The account is not active.',
+      tooManyRequests: 'Too many login attempts. Please try again later.',
     },
   },
 };

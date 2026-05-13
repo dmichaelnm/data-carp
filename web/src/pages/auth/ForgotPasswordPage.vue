@@ -63,6 +63,8 @@ onBeforeMount(() => {
 });
 
 function onSubmit(): void {
+  emailError.value = '';
+
   runTask(
     async () => {
       await Backend.accountService.sendPasswordResetEmail(email.value);

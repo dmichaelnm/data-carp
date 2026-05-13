@@ -29,8 +29,8 @@ export abstract class DocumentFirebase<D extends IDocumentData>
     const document = await getDoc(docRef);
     if (!document.exists()) {
       throw new FirebaseError(
-        'firebase/document-not-found',
-        `The document with ID "${id}" does not exist`
+        'firestore/document-not-found',
+        `The document with ID "${id}" does not exist (firestore/document-not-found).`
       );
     }
     const data = document.data() as D;

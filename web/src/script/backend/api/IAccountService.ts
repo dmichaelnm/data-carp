@@ -15,4 +15,6 @@ export interface IAccountService {
   ): Promise<IAccount>;
 
   getAccount(id: string): Promise<IAccount>;
+
+  sendPasswordResetEmail(email: string): Promise<void>;
 }

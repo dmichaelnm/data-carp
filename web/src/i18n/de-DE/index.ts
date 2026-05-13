@@ -58,7 +58,21 @@ export default {
       },
     },
     forgotPassword: {
-      button: 'Kennwort vergessen',
+      button: {
+        link: 'Kennwort vergessen',
+        send: 'Email senden',
+      },
+      message:
+        'Falls Sie Ihr Kennwort vergessen haben, können Sie es hier zurücksetzen lassen. Geben Sie dazu die ' +
+        'Email-Adresse Ihres Kontos ein. Sie bekommen dann eine Email zugesendet, die einen Rücksetzungslink enthält.',
+      dialog: {
+        success: {
+          title: 'Email wurde versendet',
+          message:
+            'Die Email für das Zurücksetzen Kennworts wurde erfolgreich versendet. Bitte überprüfen Sie Ihren ' +
+            'Posteingang und sicherheitshalber auch Ihren Spam-Ordner.',
+        },
+      },
     },
     error: {
       passwordConfirmInvalid: 'Die Kennwortbestätigung ist fehlgeschlagen.',

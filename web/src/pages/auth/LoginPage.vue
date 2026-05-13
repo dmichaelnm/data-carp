@@ -38,8 +38,9 @@
           </div>
           <div class="col text-center">
             <app-button
-              :label="$t('auth.forgotPassword.button')"
+              :label="$t('auth.forgotPassword.button.link')"
               button-style="link"
+              to="/auth/forgot-password"
             />
           </div>
         </div>

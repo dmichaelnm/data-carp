@@ -55,7 +55,21 @@ export default {
       },
     },
     forgotPassword: {
-      button: 'Forgot Password',
+      button: {
+        link: 'Forgot Password',
+        send: 'Send Email',
+      },
+      message:
+        'If you have forgotten your password, you can have it reset here. To do so, enter the email address of your ' +
+        'account. You will then receive an email containing a reset link.',
+      dialog: {
+        success: {
+          title: 'Email sent',
+          message:
+            'The email for resetting your password has been sent successfully. Please check your ' +
+            'inbox and, to be safe, also your spam folder.',
+        },
+      },
     },
     error: {
       passwordConfirmInvalid: 'The password confirmation has failed.',

@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue')
+    component: () => import('layouts/MainLayout.vue'),
   },
 
   {
@@ -11,8 +11,15 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/AuthenticationLayout.vue'),
     children: [
       { path: 'login', component: () => import('pages/auth/LoginPage.vue') },
-      { path: 'register', component: () => import('pages/auth/RegisterPage.vue') },
-    ]
+      {
+        path: 'register',
+        component: () => import('pages/auth/RegisterPage.vue'),
+      },
+      {
+        path: 'forgot-password',
+        component: () => import('pages/auth/ForgotPasswordPage.vue'),
+      },
+    ],
   },
 
   // Always leave this as last one,

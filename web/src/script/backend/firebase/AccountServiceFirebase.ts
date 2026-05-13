@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   updateProfile,
 } from 'firebase/auth';
 import { IAccountService } from 'src/script/backend/api/IAccountService';
@@ -60,5 +61,9 @@ export class AccountServiceFirebase implements IAccountService {
 
   async getAccount(id: string): Promise<IAccount> {
     return await AccountFirebase.getAccount(id);
+  }
+
+  async sendPasswordResetEmail(email: string): Promise<void> {
+    await sendPasswordResetEmail(firebaseAuth, email);
   }
 }

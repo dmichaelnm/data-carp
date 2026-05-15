@@ -25,9 +25,15 @@
             />
           </div>
         </div>
-        <div class="row q-col-gutter-md">
-          <div class="col text-center">
+        <div class="row q-col-gutter-md items-center">
+          <div class="col text-right">
             <app-button :label="$t('auth.login.button')" type="submit" />
+          </div>
+          <div class="col">
+            <app-checkbox
+              v-model="rememberMe"
+              :label="$t('label.rememberMe')"
+            />
           </div>
         </div>
         <div class="row q-col-gutter-md">
@@ -59,8 +65,9 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Backend } from 'src/script/backend/Backend';
 import { FirebaseError } from 'firebase/app';
-import AppInput from 'components/application/controls/AppInput.vue';
 import AppButton from 'components/application/controls/AppButton.vue';
+import AppCheckbox from 'components/application/controls/AppCheckbox.vue';
+import AppInput from 'components/application/controls/AppInput.vue';
 import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
 
 const quasar = useQuasar();
@@ -72,9 +79,11 @@ const email = ref('');
 const emailError = ref('');
 const password = ref('');
 const passwordError = ref('');
+const rememberMe = ref(false);
 
 onBeforeMount(() => {
   email.value = quasar.cookies.get('email') ?? '';
+  rememberMe.value = email.value !== '';
 });
 
 function onSubmit() {
@@ -88,7 +97,11 @@ function onSubmit() {
         password.value
       );
       if (account.data.state.active) {
-        quasar.cookies.set('email', email.value, { expires: 365 });
+        if (rememberMe.value) {
+          quasar.cookies.set('email', email.value, { expires: 365 });
+        } else {
+          quasar.cookies.remove('email');
+        }
         account.data.state.lastLogin = new Date();
         await account.save();
         await router.push('/');

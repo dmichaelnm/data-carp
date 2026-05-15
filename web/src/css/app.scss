@@ -54,6 +54,26 @@ body.body--dark {
   color: $text-color-label-focus-dark;
 }
 
+.q-menu {
+  background-color: $frame-background-light;
+  border-radius: 8px;
+  border: 1px solid $border-color-light;
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.body--dark .q-menu {
+  background-color: $frame-background-dark;
+  border: 1px solid $border-color-dark;
+}
+
+.q-separator {
+  background-color: $border-color-light;
+}
+
+.body--dark .q-separator {
+  background-color: $border-color-dark;
+}
+
 // --------------------------------------------------------------------------------
 
 .text-hint {

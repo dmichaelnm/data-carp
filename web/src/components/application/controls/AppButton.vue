@@ -13,11 +13,12 @@
     @click="emit('click')"
   >
     <q-tooltip v-if="tooltip">{{ tooltip }}</q-tooltip>
+    <slot />
   </q-btn>
 </template>
 
 <style lang="scss" scoped>
-@import '../../../css/quasar.variables';
+@import 'src/css/quasar.variables';
 
 .button-push {
   border-radius: 8px;
@@ -42,7 +43,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { TButtonStyle, TButtonType } from 'src/script/ui/types';
+import { TButtonStyle, TButtonType, TColorName } from 'src/script/ui/types';
 
 const props = defineProps<{
   buttonStyle?: TButtonStyle;
@@ -51,14 +52,16 @@ const props = defineProps<{
   to?: string;
   tooltip?: string;
   type?: TButtonType | undefined;
-  color?: string;
+  color?: TColorName | string | undefined;
 }>();
 
 const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const _color = computed(() => props.color ?? 'primary');
+const _color = computed(() =>
+  props.color ?? props.icon ? 'button-icon-color' : 'primary'
+);
 const _buttonStyle = computed(() => props.buttonStyle ?? 'push');
 const _type = computed(() => props.type ?? 'button');
 </script>

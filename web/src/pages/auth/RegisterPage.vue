@@ -116,7 +116,6 @@ function onSubmit(): void {
         quasar.dark.isActive,
         i18n.locale.value
       );
-      quasar.cookies.set('email', email.value, { expires: 365 });
       messageDialog(
         'success',
         i18n.t('auth.register.dialog.success.title'),

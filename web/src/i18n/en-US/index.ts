@@ -1,7 +1,14 @@
 export default {
+  application: {
+    title: 'Data Carp',
+  },
   button: {
     back: 'Back',
     close: 'Close',
+    darkMode: 'Dark Mode',
+    language: 'Language',
+    lightMode: 'Light Mode',
+    signOut: 'Sign Out',
   },
   dialog: {
     unexpected: {
@@ -22,18 +29,15 @@ export default {
     lastName: 'Last Name',
     noSelection: 'No Selection',
     password: 'Password',
+    rememberMe: 'Remember Email-Address',
   },
   language: {
     enUS: 'English (US)',
     deDE: 'German (DE)',
   },
-  tooltip: {
-    darkMode: 'Dark Mode',
-    lightMode: 'Light Mode',
-  },
   auth: {
     login: {
-      button: 'Log In',
+      button: 'Sign In',
       message:
         'Please enter your email address and password in the input fields below to log in to the system. If you do not ' +
         'yet have an account, you can create a new one using the "Create Account" link. Please note that after creating ' +
@@ -80,6 +84,41 @@ export default {
       invalidCredentials: 'The provided login credentials are invalid.',
       accountNotActive: 'The account is not active.',
       tooManyRequests: 'Too many login attempts. Please try again later.',
+    },
+  },
+  info: {
+    privacyPolicy: {
+      title: 'Privacy Policy',
+      cookies: {
+        title: 'Use of Cookies',
+        message1:
+          'Our website uses so-called “cookies”. These are small text files that are stored on your ' +
+          'device and retrieved by your browser. Cookies do not cause any damage to your computer ' +
+          'and do not contain viruses. They are used to make our offering more user-friendly, more effective, and more ' +
+          'secure.',
+        message2: 'We divide the cookies used into the following categories:',
+        message3: 'Necessary / Functional Cookies (No Consent Required):',
+        message4:
+          'Some cookies are strictly necessary for the technical operation of the website. These include cookies that ' +
+          'store your preferred settings, such as language selection (Language) or the visual design (Dark Mode / ' +
+          'Dark Theme), for your next visit. Without these cookies, the website would have to be reconfigured each time ' +
+          'a page is accessed. The legal basis for this storage is our legitimate ' +
+          'interest in the technically error-free and optimized provision of our services (Art. 6 para. 1 ' +
+          'lit. f GDPR).',
+        message5: 'Convenience / Input Cookies (Consent Required):',
+        message6:
+          'If you use the option to store your email address on our website (e.g., for faster login or ' +
+          'in a form) so that you do not have to enter it again each time, this is done ' +
+          'exclusively on the basis of your voluntary consent (Art. 6 para. 1 lit. a GDPR). You ' +
+          'can withdraw this consent at any time with effect for the future by deleting the cookies in your ' +
+          'browser settings.',
+        message7: 'Management and Deletion of Cookies',
+        message8:
+          'You can configure your browser so that you are informed when cookies are set and only allow cookies ' +
+          'in individual cases, exclude the acceptance of cookies for certain cases or in general, and activate ' +
+          'the automatic deletion of cookies when closing the browser. If cookies are disabled, ' +
+          'the functionality of this website may be limited.',
+      },
     },
   },
 };

@@ -22,6 +22,17 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  {
+    path: '/info',
+    component: () => import('layouts/InfoLayout.vue'),
+    children: [
+      {
+        path: 'privacy-policy',
+        component: () => import('pages/info/PrivacyPolicyPage.vue'),
+      },
+    ],
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {

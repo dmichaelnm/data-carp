@@ -11,7 +11,6 @@ import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
 import { AccountFirebase } from 'src/script/backend/firebase/AccountFirebase';
-import { Backend } from 'src/script/backend/Backend';
 
 export class AccountServiceFirebase implements IAccountService {
   onAuthenticationStateChanged(callback: (account: IAccount | null) => void) {
@@ -21,7 +20,7 @@ export class AccountServiceFirebase implements IAccountService {
       } else {
         const account = await this.getAccount(user.uid);
         if (!account.data.state.active) {
-          await Backend.accountService.signOut();
+          await signOut(firebaseAuth);
           callback(null);
         }
         callback(account);
@@ -85,9 +84,5 @@ export class AccountServiceFirebase implements IAccountService {
       password
     );
     return AccountFirebase.getAccount(credentials.user.uid);
-  }
-
-  async signOut(): Promise<void> {
-    await signOut(firebaseAuth);
   }
 }

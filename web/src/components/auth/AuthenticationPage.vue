@@ -15,8 +15,8 @@
               :icon="quasar.dark.isActive ? 'o_light_mode' : 'o_dark_mode'"
               :tooltip="
                 quasar.dark.isActive
-                  ? $t('tooltip.lightMode')
-                  : $t('tooltip.darkMode')
+                  ? $t('button.lightMode')
+                  : $t('button.darkMode')
               "
               @click="toggleDarkMode"
             />

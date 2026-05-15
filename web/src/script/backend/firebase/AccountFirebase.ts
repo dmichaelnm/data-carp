@@ -2,6 +2,8 @@ import { DocumentFirebase } from 'src/script/backend/firebase/DocumentFirebase';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
+import { signOut } from 'firebase/auth';
+import { firebaseAuth } from 'boot/firebase';
 
 export class AccountFirebase
   extends DocumentFirebase<IAccountData>
@@ -18,5 +20,13 @@ export class AccountFirebase
       EDocumentType.Account,
       (data) => new AccountFirebase(id, EDocumentType.Account, data, false)
     );
+  }
+
+  getDisplayName(): string {
+    return `${this.data.profile.firstName} ${this.data.profile.lastName}`;
+  }
+
+  async signOut(): Promise<void> {
+    await signOut(firebaseAuth);
   }
 }

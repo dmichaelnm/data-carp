@@ -1,7 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
-    <message-dialog v-model="messageDialogOptions.visible" />
-    <app-footer :show-privacy-policy="true" />
+    <app-footer :show-privacy-policy="false" />
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -20,7 +19,16 @@
 </style>
 
 <script setup lang="ts">
-import { messageDialogOptions } from 'src/script/ui/messageDialog';
-import MessageDialog from '../components/application/dialogs/MessageDialog.vue';
+import { onBeforeMount } from 'vue';
+import { useQuasar } from 'quasar';
 import AppFooter from 'components/application/AppFooter.vue';
+import { useI18n } from 'vue-i18n';
+
+const i18n = useI18n();
+const quasar = useQuasar();
+
+onBeforeMount(() => {
+  quasar.dark.set(quasar.cookies.get('darkMode') === 'true');
+  i18n.locale.value = quasar.cookies.get('language') ?? 'en-US';
+});
 </script>

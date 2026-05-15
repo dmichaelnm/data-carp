@@ -19,6 +19,4 @@ export interface IAccountService {
   sendPasswordResetEmail(email: string): Promise<void>;
 
   signIn(email: string, password: string): Promise<IAccount>;
-
-  signOut(): Promise<void>;
 }

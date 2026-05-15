@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
-    <app-footer />
+    <app-header />
+    <app-footer :show-privacy-policy="true" />
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -23,12 +24,15 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useSessionStore } from 'stores/session-store';
 import { Backend } from 'src/script/backend/Backend';
 import AppFooter from 'components/application/AppFooter.vue';
+import AppHeader from 'components/application/AppHeader.vue';
 
 const quasar = useQuasar();
 const i18n = useI18n();
 const router = useRouter();
+const session = useSessionStore();
 
 onBeforeMount(() => {
   Backend.accountService.onAuthenticationStateChanged((account) => {
@@ -36,7 +40,14 @@ onBeforeMount(() => {
       router.push('/auth/login');
     } else {
       quasar.dark.set(account.data.preference.darkMode);
+      quasar.cookies.set('darkMode', quasar.dark.isActive.toString(), {
+        expires: 365,
+      });
       i18n.locale.value = account.data.preference.language;
+      quasar.cookies.set('language', i18n.locale.value, {
+        expires: 365,
+      });
+      session.account = account;
     }
   });
 });

@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useColor } from 'src/script/ui/composable';
-import { TDialogButton } from 'src/script/ui/types';
+import { TColorName, TDialogButton } from 'src/script/ui/types';
 import AppButton from 'src/components/application/controls/AppButton.vue';
 import { QDialog } from 'quasar';
 
@@ -74,7 +74,7 @@ const appDialogRef = ref<InstanceType<typeof QDialog> | null>(null);
 
 const props = defineProps<{
   modelValue: boolean;
-  color?: string | undefined;
+  color?: TColorName | string | undefined;
   title?: string;
   message?: string;
   buttons?: TDialogButton[] | undefined;

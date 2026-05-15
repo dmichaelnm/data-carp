@@ -1,13 +1,20 @@
 import { useQuasar } from 'quasar';
 import { useMessageDialog } from 'src/script/ui/messageDialog';
 import { useI18n } from 'vue-i18n';
+import { TColorName } from 'src/script/ui/types';
 
 const Colors: Record<string, string> = {
+  'primary-light': '#1976D2',
+  'primary-dark': '#1976D2',
   'frame-background-light': '#FFFFFF',
   'frame-background-dark': '#202020',
+  'button-icon-color-light': '#707070',
+  'button-icon-color-dark': '#909090',
+  'text-color-light': '#404040',
+  'text-color-dark': '#C0C0C0',
 };
 
-export function useColor(): (name: string) => string {
+export function useColor(): (name: TColorName) => string {
   const quasar = useQuasar();
   return (name: string) => {
     const suffix = quasar.dark.isActive ? 'dark' : 'light';

@@ -1,9 +1,15 @@
 <template>
   <app-button
-    icon="person"
+    :icon="_photoUrl ? undefined : 'person'"
     button-style="icon"
     :tooltip="session.account?.getDisplayName()"
   >
+    <q-avatar v-if="_photoUrl">
+      <q-img
+        :src="session.account?.data.profile.photoURL"
+        referrerpolicy="no-referrer"
+      />
+    </q-avatar>
     <q-menu anchor="bottom right" self="top right" style="width: 225px">
       <q-list>
         <app-menu-item
@@ -61,6 +67,8 @@ const _modeIcon = computed(() =>
 const _modeLabel = computed(() =>
   quasar.dark.isActive ? 'button.lightMode' : 'button.darkMode'
 );
+
+const _photoUrl = computed(() => session.account?.data.profile.photoURL);
 
 function toggleDarkMode(): void {
   quasar.dark.toggle();

@@ -39,12 +39,25 @@ export default {
   },
   auth: {
     login: {
-      button: 'Anmelden',
+      button: {
+        normal: 'Anmelden',
+        google: 'Mit Google anmelden',
+      },
       message:
         'Bitte geben Sie in die untenstehenden Eingabefelder Ihre Email-Adresse und Ihr Kennwort an, um sich am System ' +
         'anzumelden. Falls Sie noch kein Konto besitzen können Sie sich über den Link "Konto erstellen" ein neues Konto ' +
         'erstellen. Beachten Sie, dass nach Erstellung des Kontos noch ein berechtigter Administrator das Konto ' +
         'freischalten muss, bevor Sie sich anmelden können.',
+      dialog: {
+        error: {
+          accountNotActive: {
+            title: 'Konto nicht freigeschaltet',
+            message:
+              'Das Konto wurde erstellt, aber noch nicht freigeschaltet. Bitte warten Sie mit der Anmeldung, bis ' +
+              'ein Administrator das Konto freigeschaltet hat.',
+          },
+        },
+      },
     },
     register: {
       button: 'Konto erstellen',

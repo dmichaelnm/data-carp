@@ -7,7 +7,12 @@
       <div class="auth-frame-padding-top auth-frame-padding-bottom">
         <slot />
       </div>
-      <div style="margin-top: 32px">
+      <div class="q-col-gutter-y-md">
+        <div class="row">
+          <div class="col">
+            <q-separator />
+          </div>
+        </div>
         <div class="row q-col-gutter-x-md items-center">
           <div class="col">
             <app-button

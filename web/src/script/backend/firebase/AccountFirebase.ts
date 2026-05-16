@@ -14,11 +14,15 @@ export class AccountFirebase
     return new AccountFirebase(id, EDocumentType.Account, data, true);
   }
 
-  static async getAccount(id: string): Promise<IAccount> {
+  static async getAccount(
+    id: string,
+    accountExpected: boolean
+  ): Promise<IAccount | undefined> {
     return await DocumentFirebase.get<IAccountData, IAccount>(
       id,
       EDocumentType.Account,
-      (data) => new AccountFirebase(id, EDocumentType.Account, data, false)
+      (data) => new AccountFirebase(id, EDocumentType.Account, data, false),
+      accountExpected
     );
   }
 

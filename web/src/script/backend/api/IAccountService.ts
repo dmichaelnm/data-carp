@@ -14,9 +14,14 @@ export interface IAccountService {
     language: string
   ): Promise<IAccount>;
 
-  getAccount(id: string): Promise<IAccount>;
+  getAccount(
+    id: string,
+    accountExpected: boolean
+  ): Promise<IAccount | undefined>;
 
   sendPasswordResetEmail(email: string): Promise<void>;
 
   signIn(email: string, password: string): Promise<IAccount>;
+
+  signInWithGoogle(darkMode: boolean, language: string): Promise<IAccount>;
 }

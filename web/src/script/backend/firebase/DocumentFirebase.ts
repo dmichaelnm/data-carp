@@ -23,15 +23,19 @@ export abstract class DocumentFirebase<D extends IDocumentData>
   static async get<D extends IDocumentData, R extends IDocument<D>>(
     id: string,
     type: EDocumentType,
-    creator: (data: D) => R
-  ): Promise<R> {
+    creator: (data: D) => R,
+    documentExpected: boolean
+  ): Promise<R | undefined> {
     const docRef = doc(firebaseStore, type, id);
     const document = await getDoc(docRef);
     if (!document.exists()) {
-      throw new FirebaseError(
-        'firestore/document-not-found',
-        `The document with ID "${id}" does not exist (firestore/document-not-found).`
-      );
+      if (documentExpected) {
+        throw new FirebaseError(
+          'firestore/document-not-found',
+          `The document with ID "${id}" does not exist (firestore/document-not-found).`
+        );
+      }
+      return undefined;
     }
     const data = document.data() as D;
     return creator(data);

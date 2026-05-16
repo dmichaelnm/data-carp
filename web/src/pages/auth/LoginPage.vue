@@ -27,7 +27,7 @@
         </div>
         <div class="row q-col-gutter-md items-center">
           <div class="col text-right">
-            <app-button :label="$t('auth.login.button')" type="submit" />
+            <app-button :label="$t('auth.login.button.normal')" type="submit" />
           </div>
           <div class="col">
             <app-checkbox
@@ -52,6 +52,15 @@
             />
           </div>
         </div>
+        <div class="row q-col-gutter-md">
+          <div class="col text-center">
+            <google-auth-button
+              :label="$t('auth.login.button.google')"
+              :width="250"
+              @click="onSignInWithGoogle"
+            />
+          </div>
+        </div>
       </div>
     </q-form>
   </authentication-page>
@@ -63,17 +72,20 @@ import { useQuasar } from 'quasar';
 import { useRunTask } from 'src/script/ui/composable';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useMessageDialog } from 'src/script/ui/messageDialog';
 import { Backend } from 'src/script/backend/Backend';
 import { FirebaseError } from 'firebase/app';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AppCheckbox from 'components/application/controls/AppCheckbox.vue';
 import AppInput from 'components/application/controls/AppInput.vue';
 import AuthenticationPage from 'components/auth/AuthenticationPage.vue';
+import GoogleAuthButton from 'components/auth/GoogleAuthButton.vue';
 
 const quasar = useQuasar();
 const runTask = useRunTask();
 const router = useRouter();
 const i18n = useI18n();
+const messageDialog = useMessageDialog();
 
 const email = ref('');
 const emailError = ref('');
@@ -96,21 +108,14 @@ function onSubmit() {
         email.value,
         password.value
       );
-      if (account.data.state.active) {
-        if (rememberMe.value) {
-          quasar.cookies.set('email', email.value, { expires: 365 });
-        } else {
-          quasar.cookies.remove('email');
-        }
-        account.data.state.lastLogin = new Date();
-        await account.save();
-        await router.push('/');
+      if (rememberMe.value) {
+        quasar.cookies.set('email', email.value, { expires: 365 });
       } else {
-        throw new FirebaseError(
-          'auth/account-not-active',
-          'The account is not active (auth/account-not-active).'
-        );
+        quasar.cookies.remove('email');
       }
+      account.data.state.lastLogin = new Date();
+      await account.save();
+      await router.push('/');
     },
     (error) => {
       if (error instanceof FirebaseError) {
@@ -125,6 +130,37 @@ function onSubmit() {
           return true;
         } else if (error.code === 'auth/too-many-requests') {
           passwordError.value = i18n.t('auth.error.tooManyRequests');
+          return true;
+        }
+      }
+      return false;
+    }
+  );
+}
+
+function onSignInWithGoogle(): void {
+  emailError.value = '';
+  passwordError.value = '';
+
+  runTask(
+    async () => {
+      const account = await Backend.accountService.signInWithGoogle(
+        quasar.dark.isActive,
+        i18n.locale.value
+      );
+      quasar.cookies.remove('email');
+      account.data.state.lastLogin = new Date();
+      await account.save();
+      await router.push('/');
+    },
+    (error) => {
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/account-not-active') {
+          messageDialog(
+            'error',
+            i18n.t('auth.login.dialog.error.accountNotActive.title'),
+            i18n.t('auth.login.dialog.error.accountNotActive.message')
+          );
           return true;
         }
       }

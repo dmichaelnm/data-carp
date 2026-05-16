@@ -23,8 +23,8 @@
 .button-push {
   border-radius: 8px;
   color: white;
-  font-size: 1rem;
-  padding: 0 24px;
+  font-size: 1.1rem;
+  padding: 2px 24px;
 }
 .button-icon {
   background-color: transparent;

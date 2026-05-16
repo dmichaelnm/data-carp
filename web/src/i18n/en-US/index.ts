@@ -37,11 +37,24 @@ export default {
   },
   auth: {
     login: {
-      button: 'Sign In',
+      button: {
+        normal: 'Sign In',
+        google: 'Sign In with Google',
+      },
       message:
         'Please enter your email address and password in the input fields below to log in to the system. If you do not ' +
         'yet have an account, you can create a new one using the "Create Account" link. Please note that after creating ' +
         'your account, an authorized administrator must activate it before you can log in.',
+      dialog: {
+        error: {
+          accountNotActive: {
+            title: 'Account not activated',
+            message:
+              'The account has been created but has not yet been activated. Please wait to sign in until ' +
+              'an administrator has activated the account.',
+          },
+        },
+      },
     },
     register: {
       button: 'Create Account',

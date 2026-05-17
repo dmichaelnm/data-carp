@@ -43,7 +43,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import '../../css/quasar.variables';
+@import '../../../css/quasar.variables';
 
 .dialog-frame {
   border-radius: 8px;
@@ -67,11 +67,11 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useColor } from 'src/script/ui/composable';
+import { computed, ref } from 'vue';
+import { QDialog, QForm } from 'quasar';
 import { TColorName, TDialogButton } from 'src/script/ui/types';
 import AppButton from 'src/components/application/controls/AppButton.vue';
-import { QDialog, QForm } from 'quasar';
 
 const getColor = useColor();
 

@@ -1,5 +1,5 @@
 <template>
-  <profile-dialog v-model="profileDialogVisible" />
+  <account-profile-dialog v-model="profileDialogVisible" />
 
   <app-button
     :icon="_photoUrl ? undefined : 'account_circle'"
@@ -57,11 +57,11 @@
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { computed, ref } from 'vue';
-import { useSessionStore } from 'stores/session-store';
+import { useSessionStore } from 'src/stores/session-store';
 import { languageOptions } from 'src/script/ui/options';
-import AppButton from 'components/application/controls/AppButton.vue';
-import AppMenuItem from 'components/application/controls/AppMenuItem.vue';
-import ProfileDialog from 'components/application/dialogs/ProfileDialog.vue';
+import AppButton from 'src/components/application/controls/AppButton.vue';
+import AppMenuItem from 'src/components/application/controls/AppMenuItem.vue';
+import AccountProfileDialog from './AccountProfileDialog.vue';
 
 const i18n = useI18n();
 const quasar = useQuasar();

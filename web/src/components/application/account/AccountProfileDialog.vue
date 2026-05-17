@@ -72,12 +72,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useSessionStore } from 'stores/session-store';
+import { useSessionStore } from 'src/stores/session-store';
 import { Backend } from 'src/script/backend/Backend';
 import { TDialogButton } from 'src/script/ui/types';
-import AppDialog from 'components/application/AppDialog.vue';
-import AppInput from 'components/application/controls/AppInput.vue';
-import AppButton from 'components/application/controls/AppButton.vue';
+import AppDialog from '../controls/AppDialog.vue';
+import AppInput from 'src/components/application/controls/AppInput.vue';
+import AppButton from 'src/components/application/controls/AppButton.vue';
 
 const session = useSessionStore();
 

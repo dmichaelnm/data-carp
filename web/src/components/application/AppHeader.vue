@@ -7,7 +7,7 @@
       <div class="app-title">{{ $t('application.title') }}</div>
       <q-space />
       <div>
-        <app-account-profile />
+        <account-profile-menu />
       </div>
     </q-toolbar>
   </q-header>
@@ -41,6 +41,6 @@
 </style>
 
 <script setup lang="ts">
-import AppAccountProfile from 'components/application/AppAccountProfile.vue';
+import AccountProfileMenu from './account/AccountProfileMenu.vue';
 import AppButton from 'components/application/controls/AppButton.vue';
 </script>

@@ -21,6 +21,6 @@
 
 <script setup lang="ts">
 import { messageDialogOptions } from 'src/script/ui/messageDialog';
-import MessageDialog from '../components/application/dialogs/MessageDialog.vue';
+import MessageDialog from 'components/application/MessageDialog.vue';
 import AppFooter from 'components/application/AppFooter.vue';
 </script>

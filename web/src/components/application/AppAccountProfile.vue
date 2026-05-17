@@ -1,14 +1,13 @@
 <template>
+  <profile-dialog v-model="profileDialogVisible" />
+
   <app-button
-    :icon="_photoUrl ? undefined : 'person'"
+    :icon="_photoUrl ? undefined : 'account_circle'"
     button-style="icon"
     :tooltip="session.account?.getDisplayName()"
   >
     <q-avatar v-if="_photoUrl">
-      <q-img
-        :src="session.account?.data.profile.photoURL"
-        referrerpolicy="no-referrer"
-      />
+      <q-img :src="_photoUrl" referrerpolicy="no-referrer" />
     </q-avatar>
     <q-menu anchor="bottom right" self="top right" style="width: 225px">
       <q-list>
@@ -38,6 +37,12 @@
           </q-menu>
         </app-menu-item>
         <app-menu-item
+          :label="$t('button.profile')"
+          icon="person"
+          separator="above"
+          @click="profileDialogVisible = true"
+        />
+        <app-menu-item
           :label="$t('button.signOut')"
           icon="logout"
           separator="above"
@@ -51,15 +56,18 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useSessionStore } from 'stores/session-store';
 import { languageOptions } from 'src/script/ui/options';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AppMenuItem from 'components/application/controls/AppMenuItem.vue';
+import ProfileDialog from 'components/application/dialogs/ProfileDialog.vue';
 
 const i18n = useI18n();
 const quasar = useQuasar();
 const session = useSessionStore();
+
+const profileDialogVisible = ref(false);
 
 const _modeIcon = computed(() =>
   quasar.dark.isActive ? 'light_mode' : 'dark_mode'

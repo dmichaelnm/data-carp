@@ -11,6 +11,11 @@ export default {
     language: 'Sprache',
     lightMode: 'Heller Modus',
     signOut: 'Abmelden',
+    profile: 'Profil',
+    okay: 'Okay',
+    cancel: 'Abbrechen',
+    uploadPhoto: 'Foto hochladen',
+    removePhoto: 'Foto entfernen',
   },
   dialog: {
     unexpected: {

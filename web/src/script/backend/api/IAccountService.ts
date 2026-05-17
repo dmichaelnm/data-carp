@@ -24,4 +24,8 @@ export interface IAccountService {
   signIn(email: string, password: string): Promise<IAccount>;
 
   signInWithGoogle(darkMode: boolean, language: string): Promise<IAccount>;
+
+  uploadPhoto(photo: File): Promise<string>;
+
+  removePhoto(url: string): Promise<void>;
 }

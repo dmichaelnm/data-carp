@@ -5,7 +5,7 @@ export interface IAccountData extends IDocumentData {
     firstName: string;
     lastName: string;
     email: string;
-    photoURL?: string;
+    photoURL: string | null;
   },
   preference: {
     darkMode: boolean;

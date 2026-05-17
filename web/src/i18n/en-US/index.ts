@@ -9,6 +9,11 @@ export default {
     language: 'Language',
     lightMode: 'Light Mode',
     signOut: 'Sign Out',
+    profile: 'Profile',
+    okay: 'Okay',
+    cancel: 'Abbrechen',
+    uploadPhoto: 'Upload Photo',
+    removePhoto: 'Remove Photo',
   },
   dialog: {
     unexpected: {

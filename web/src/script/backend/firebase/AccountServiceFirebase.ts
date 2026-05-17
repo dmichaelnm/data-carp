@@ -8,7 +8,13 @@ import {
   updateProfile,
   GoogleAuthProvider,
 } from 'firebase/auth';
-import { firebaseAuth } from 'boot/firebase';
+import {
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+import { firebaseAuth, firebaseStorage } from 'boot/firebase';
 import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
@@ -52,6 +58,7 @@ export class AccountServiceFirebase implements IAccountService {
         firstName: firstName,
         lastName: lastName,
         email: email,
+        photoURL: null,
       },
       preference: {
         darkMode: darkMode,
@@ -117,7 +124,7 @@ export class AccountServiceFirebase implements IAccountService {
           firstName: displayName.split(' ')[0] ?? 'Unknown',
           lastName: displayName.split(' ')[1] ?? 'User',
           email: credentials.user.email as string,
-          photoURL: credentials.user.photoURL ?? undefined,
+          photoURL: credentials.user.photoURL ?? null,
         },
         preference: {
           darkMode: darkMode,
@@ -138,5 +145,22 @@ export class AccountServiceFirebase implements IAccountService {
       );
     }
     return account as IAccount;
+  }
+
+  async uploadPhoto(photo: File): Promise<string> {
+    const extension = photo.name.split('.').pop();
+    const path = `profile-photos/${firebaseAuth.currentUser?.uid}.${extension}`;
+    const fileRef = storageRef(firebaseStorage, path);
+    await uploadBytes(fileRef, photo);
+    return await getDownloadURL(fileRef);
+  }
+
+  async removePhoto(url: string): Promise<void> {
+    try {
+      const fileRef = storageRef(firebaseStorage, url);
+      await deleteObject(fileRef);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 }

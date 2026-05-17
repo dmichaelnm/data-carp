@@ -9,6 +9,7 @@
     :rules="[(value) => !!value || !_mandatory || $t('error.inputEmpty')]"
     :error="error !== undefined && error !== null && error.trim().length > 0"
     :error-message="error"
+    :readonly="readOnly"
     lazy-rules="ondemand"
     dense
     outlined
@@ -45,6 +46,7 @@ const props = defineProps<{
   mandatory?: boolean;
   spellcheck?: boolean;
   type?: TInputType;
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

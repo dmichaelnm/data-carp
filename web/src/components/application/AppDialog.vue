@@ -3,12 +3,14 @@
     ref="appDialogRef"
     :model-value="_modelValue"
     persistent
+    @before-show="emit('dialog:opened')"
     @update:model-value="(value) => (_modelValue = value)"
   >
     <div
       class="dialog-frame"
       :style="{
         width: `${_width}px`,
+        maxWidth: `${_width}px`,
         background: `linear-gradient(
           90deg, ${color ?? _frameColor} 0%,
           ${_frameColor} 16px,
@@ -20,19 +22,22 @@
       <div v-if="title" class="dialog-title">{{ title }}</div>
       <q-separator v-if="title" />
       <div v-if="message" class="dialog-message">{{ message }}</div>
-      <div class="dialog-content">
-        <slot />
-      </div>
-      <div class="dialog-buttons">
-        <app-button
-          v-for="button in _buttons"
-          :key="button.value"
-          :label="$t(button.label)"
-          :button-style="button.buttonStyle"
-          :color="button.color"
-          @click="onButtonClick(button)"
-        />
-      </div>
+      <q-form @submit="onSubmit">
+        <div class="dialog-content">
+          <slot />
+        </div>
+        <div class="dialog-buttons q-gutter-x-md items-center">
+          <app-button
+            v-for="button in _buttons"
+            :key="button.value"
+            :label="$t(button.label)"
+            :button-style="button.buttonStyle"
+            :color="button.color"
+            :type="button.type"
+            @click="onButtonClick(button)"
+          />
+        </div>
+      </q-form>
     </div>
   </q-dialog>
 </template>
@@ -66,7 +71,7 @@ import { computed, ref } from 'vue';
 import { useColor } from 'src/script/ui/composable';
 import { TColorName, TDialogButton } from 'src/script/ui/types';
 import AppButton from 'src/components/application/controls/AppButton.vue';
-import { QDialog } from 'quasar';
+import { QDialog, QForm } from 'quasar';
 
 const getColor = useColor();
 
@@ -79,11 +84,14 @@ const props = defineProps<{
   message?: string;
   buttons?: TDialogButton[] | undefined;
   width?: number;
+  submitHandler?: () => Promise<boolean>;
+  closeHandler?: (button: TDialogButton) => void;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
   (e: 'dialog:closed', value: string): void;
+  (e: 'dialog:opened'): void;
 }>();
 
 const _modelValue = computed({
@@ -107,7 +115,22 @@ const _frameColor = computed(() => getColor('frame-background'));
 const _width = computed(() => props.width ?? 600);
 
 function onButtonClick(button: TDialogButton): void {
-  appDialogRef.value?.hide();
-  emit('dialog:closed', button.value);
+  if (button.type !== 'submit') {
+    if (props.closeHandler) {
+      props.closeHandler(button);
+    }
+    appDialogRef.value?.hide();
+    emit('dialog:closed', button.value);
+  }
+}
+
+async function onSubmit(): Promise<void> {
+  if (!props.submitHandler || (await props.submitHandler())) {
+    const submitButton = _buttons.value.find(
+      (button) => button.type === 'submit'
+    );
+    appDialogRef.value?.hide();
+    emit('dialog:closed', submitButton?.value as string);
+  }
 }
 </script>

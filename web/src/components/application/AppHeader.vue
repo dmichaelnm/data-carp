@@ -4,7 +4,11 @@
       <div>
         <app-button button-style="icon" icon="o_menu" />
       </div>
+      <q-separator vertical style="margin: 0 12px" />
       <div class="app-title">{{ $t('application.title') }}</div>
+      <div style="padding: 8px 64px">
+        <project-menu />
+      </div>
       <q-space />
       <div>
         <account-profile-menu />
@@ -43,4 +47,5 @@
 <script setup lang="ts">
 import AccountProfileMenu from './account/AccountProfileMenu.vue';
 import AppButton from 'components/application/controls/AppButton.vue';
+import ProjectMenu from 'components/application/project/ProjectMenu.vue';
 </script>

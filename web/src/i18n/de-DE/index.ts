@@ -14,6 +14,7 @@ export default {
     profile: 'Profil',
     okay: 'Okay',
     cancel: 'Abbrechen',
+    save: 'Speichern',
     uploadPhoto: 'Foto hochladen',
     removePhoto: 'Foto entfernen',
   },
@@ -106,6 +107,24 @@ export default {
       accountNotActive: 'Das Konto ist nicht aktiviert.',
       tooManyRequests:
         'Zu viele Anmeldeversuche. Bitte versuchen Sie es später noch einmal.',
+    },
+  },
+  project: {
+    menu: {
+      noProjects: 'Keine Projekte vorhanden',
+      create: 'Projekt erstellen',
+    },
+    editor: {
+      create: {
+        title: 'Projekt erstellen',
+        message:
+          'Ein Projekt stellt eine Sammlung von Modellen, Metadaten und Prozessen dar, die alle im selben ' +
+          'Kontext stattfinden. Weiterhin werden auf dieser Ebene auch die Zugriffsrechte für Benutzer ' +
+          'definiert, um die Sicherheit und Zugänglichkeit des Projekts zu gewährleisten. Um ein neues Projekt zu ' +
+          'erstellen, müssen Sie hier lediglich den Namen des Projekts angeben. Alle weiteren Eigenschaften wie eine ' +
+          'Beschreibung oder die Zugriffsrechte können auch später noch festgelegt werden. Sie als Ersteller des ' +
+          'Projekts werden auch automatisch als Eigentümer des Projekts festgelegt.',
+      },
     },
   },
   info: {

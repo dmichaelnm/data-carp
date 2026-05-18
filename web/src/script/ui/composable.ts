@@ -14,9 +14,14 @@ const Colors: Record<string, string> = {
   'text-color-dark': '#C0C0C0',
 };
 
-export function useColor(): (name: TColorName) => string {
+export function useColor(): (
+  name: TColorName | string | undefined
+) => string | undefined {
   const quasar = useQuasar();
-  return (name: string) => {
+  return (name: string | undefined) => {
+    if (name === undefined) {
+      return undefined;
+    }
     const suffix = quasar.dark.isActive ? 'dark' : 'light';
     return Colors[`${name}-${suffix}`];
   };

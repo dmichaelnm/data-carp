@@ -7,7 +7,7 @@
     :type="_type"
     :round="_buttonStyle === 'icon'"
     :to="to"
-    :color="_color"
+    :style="_style"
     dense
     no-caps
     @click="emit('click')"
@@ -42,8 +42,11 @@
 </style>
 
 <script setup lang="ts">
+import { useColor } from 'src/script/ui/composable';
 import { computed } from 'vue';
 import { TButtonStyle, TButtonType, TColorName } from 'src/script/ui/types';
+
+const colors = useColor();
 
 const props = defineProps<{
   buttonStyle?: TButtonStyle;
@@ -59,9 +62,20 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const _color = computed(() =>
-  props.color ?? props.icon ? 'button-icon-color' : 'primary'
-);
+const _style = computed(() => {
+  const color =
+    colors(props.color) ??
+    (props.icon ? colors('button-icon-color') : colors('primary'));
+  if (_buttonStyle.value === 'push') {
+    return {
+      backgroundColor: color,
+    };
+  } else {
+    return {
+      color: color,
+    };
+  }
+});
 const _buttonStyle = computed(() => props.buttonStyle ?? 'push');
 const _type = computed(() => props.type ?? 'button');
 </script>

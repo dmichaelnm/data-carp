@@ -4,6 +4,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'project/editor/:mode/:documentId?',
+        component: () => import('pages/project/ProjectEditorPage.vue'),
+      },
+    ],
   },
 
   {

@@ -12,6 +12,7 @@ export default {
     profile: 'Profile',
     okay: 'Okay',
     cancel: 'Abbrechen',
+    save: 'Save',
     uploadPhoto: 'Upload Photo',
     removePhoto: 'Remove Photo',
   },
@@ -102,6 +103,23 @@ export default {
       invalidCredentials: 'The provided login credentials are invalid.',
       accountNotActive: 'The account is not active.',
       tooManyRequests: 'Too many login attempts. Please try again later.',
+    },
+  },
+  project: {
+    menu: {
+      noProjects: 'No projects available',
+      create: 'Create Project',
+    },
+    editor: {
+      create: {
+        title: 'Create Project',
+        message:
+          'A project represents a collection of models, metadata, and processes that all take place in the same ' +
+          'context. Furthermore, access rights for users are also defined at this level to ensure the security ' +
+          'and accessibility of the project. To create a new project, you only need to specify the name of the ' +
+          'project here. All other properties, such as a description or access rights, can also be defined later. ' +
+          'As the creator of the project, you are also automatically designated as the owner of the project.',
+      },
     },
   },
   info: {

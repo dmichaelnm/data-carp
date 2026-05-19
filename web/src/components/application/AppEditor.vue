@@ -1,32 +1,53 @@
 <template>
   <q-page>
     <div class="editor-frame">
-      <div class="editor-content">
-        <div class="editor-header">
-          <div class="editor-title">
-            {{ $t(`${scope}.editor.${_mode}.title`) }}
+      <q-form class="editor-content" @submit="onSubmit">
+        <div style="height: 100%">
+          <div class="editor-header">
+            <div class="editor-title">
+              {{ $t(`${scope}.editor.${_mode}.title`) }}
+            </div>
+            <div class="editor-message">
+              {{ $t(`${scope}.editor.${_mode}.message`) }}
+            </div>
           </div>
-          <div class="editor-message">
-            {{ $t(`${scope}.editor.${_mode}.message`) }}
+          <q-separator />
+          <q-scroll-area class="editor-body">
+            <div class="q-col-gutter-y-md editor-slot">
+              <div class="row q-col-gutter-x-md">
+                <div class="col-3">
+                  <app-input
+                    v-model="name"
+                    :label="$t(`${scope}.label.name`)"
+                    mandatory
+                    auto-focus
+                  />
+                </div>
+                <div class="col-9">
+                  <app-input
+                    v-model="description"
+                    :label="$t('label.description')"
+                  />
+                </div>
+              </div>
+            </div>
+          </q-scroll-area>
+          <q-separator />
+          <div class="row items-center editor-buttons">
+            <div class="col-6 q-gutter-x-md">
+              <slot name="buttons" />
+            </div>
+            <div class="col-6 text-right q-gutter-x-md">
+              <app-button :label="$t('button.save')" type="submit" />
+              <app-button
+                :label="$t('button.cancel')"
+                color="button-icon-color"
+                @click="router.push('/')"
+              />
+            </div>
           </div>
         </div>
-        <q-separator />
-        <q-scroll-area class="editor-body"> </q-scroll-area>
-        <q-separator />
-        <div class="row items-center editor-buttons">
-          <div class="col-6 q-gutter-x-md">
-            <slot name="buttons" />
-          </div>
-          <div class="col-6 text-right q-gutter-x-md">
-            <app-button :label="$t('button.save')" />
-            <app-button
-              :label="$t('button.cancel')"
-              color="button-icon-color"
-              @click="router.push('/')"
-            />
-          </div>
-        </div>
-      </div>
+      </q-form>
     </div>
   </q-page>
 </template>
@@ -71,23 +92,45 @@
   height: calc(100% - 216px);
 }
 
+.editor-slot {
+  padding: 24px;
+}
+
 .editor-buttons {
   padding: 16px;
 }
 </style>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useRunTask } from 'src/script/ui/composable';
 import { computed } from 'vue';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
 import AppButton from 'components/application/controls/AppButton.vue';
+import AppInput from 'components/application/controls/AppInput.vue';
 
 const route = useRoute();
 const router = useRouter();
+const runTask = useRunTask();
 
-defineProps<{
+const name = ref('');
+const description = ref('');
+
+const props = defineProps<{
   scope: EDocumentType;
+  submitHandler: (name: string, description: string | null) => Promise<void>;
 }>();
 
 const _mode = computed(() => route.params.mode as string);
+
+function onSubmit(): void {
+  runTask(async () => {
+    await props.submitHandler(
+      name.value.trim(),
+      description.value.trim() === '' ? null : description.value
+    );
+    await router.push('/');
+  });
+}
 </script>

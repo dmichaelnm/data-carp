@@ -28,6 +28,7 @@ export default {
   },
   label: {
     confirmPassword: 'Confirm Password',
+    description: 'Description (optional)',
     details: 'Details',
     email: 'Email Address',
     firstName: 'First Name',
@@ -109,6 +110,9 @@ export default {
     menu: {
       noProjects: 'No projects available',
       create: 'Create Project',
+    },
+    label: {
+      name: 'Project Name',
     },
     editor: {
       create: {

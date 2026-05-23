@@ -1,9 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
-    <app-header
-      :project-id="projectId"
-      @project:switch="(pid) => (projectId = pid)"
-    />
+    <app-header />
     <app-footer :show-privacy-policy="true" />
     <q-page-container>
       <router-view />
@@ -23,7 +20,7 @@
 </style>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
@@ -36,8 +33,6 @@ const quasar = useQuasar();
 const i18n = useI18n();
 const router = useRouter();
 const session = useSessionStore();
-
-const projectId = ref<string | undefined>();
 
 onBeforeMount(() => {
   Backend.accountService.onAuthenticationStateChanged(async (account) => {
@@ -61,7 +56,6 @@ onBeforeMount(() => {
           pid =
             session.projects.length > 0 ? session.projects[0].id : undefined;
         }
-        projectId.value = pid;
         if (pid !== session.account.data.state.lastProject) {
           session.account.data.state.lastProject = pid;
           await session.account.save();

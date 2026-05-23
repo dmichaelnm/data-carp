@@ -7,7 +7,15 @@ export const useSessionStore = defineStore('session', {
     account: null as IAccount | null,
     projects: [] as IProject[],
     project: null as IProject | null,
+    editorLock: false,
   }),
   getters: {},
-  actions: {},
+  actions: {
+    reset() {
+      this.account = null;
+      this.projects = [];
+      this.project = null;
+      this.editorLock = false;
+    }
+  },
 });

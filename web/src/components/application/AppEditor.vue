@@ -102,10 +102,11 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeMount, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useRunTask } from 'src/script/ui/composable';
 import { computed } from 'vue';
+import { useSessionStore } from 'stores/session-store';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AppInput from 'components/application/controls/AppInput.vue';
@@ -113,23 +114,37 @@ import AppInput from 'components/application/controls/AppInput.vue';
 const route = useRoute();
 const router = useRouter();
 const runTask = useRunTask();
+const session = useSessionStore();
 
 const name = ref('');
 const description = ref('');
 
 const props = defineProps<{
   scope: EDocumentType;
-  submitHandler: (name: string, description: string | null) => Promise<void>;
+  submitHandler: (name: string, description: string | null) => Promise<string>;
+}>();
+
+const emit = defineEmits<{
+  (e: 'document:created', id: string): void;
 }>();
 
 const _mode = computed(() => route.params.mode as string);
 
+onBeforeMount(() => {
+  session.editorLock = true;
+});
+
+onUnmounted(() => {
+  session.editorLock = false;
+});
+
 function onSubmit(): void {
   runTask(async () => {
-    await props.submitHandler(
+    const id = await props.submitHandler(
       name.value.trim(),
       description.value.trim() === '' ? null : description.value
     );
+    emit('document:created', id);
     await router.push('/');
   });
 }

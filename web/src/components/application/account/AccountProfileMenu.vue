@@ -46,7 +46,7 @@
           :label="$t('button.signOut')"
           icon="logout"
           separator="above"
-          @click="session.account?.signOut"
+          @click="signOut"
         />
       </q-list>
     </q-menu>
@@ -62,10 +62,12 @@ import { languageOptions } from 'src/script/ui/options';
 import AppButton from 'src/components/application/controls/AppButton.vue';
 import AppMenuItem from 'src/components/application/controls/AppMenuItem.vue';
 import AccountProfileDialog from './AccountProfileDialog.vue';
+import { useRunTask } from 'src/script/ui/composable';
 
 const i18n = useI18n();
 const quasar = useQuasar();
 const session = useSessionStore();
+const runTask = useRunTask();
 
 const profileDialogVisible = ref(false);
 
@@ -98,5 +100,15 @@ function setLanguage(language: string): void {
     session.account.data.preference.language = language;
     session.account.save();
   }
+}
+
+function signOut(): void {
+  runTask(async () => {
+    const account = session.account;
+    session.reset();
+    if (account) {
+      await account.signOut();
+    }
+  });
 }
 </script>

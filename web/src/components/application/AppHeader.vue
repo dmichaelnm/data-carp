@@ -6,11 +6,10 @@
       </div>
       <q-separator vertical style="margin: 0 12px" />
       <div class="app-title">{{ $t('application.title') }}</div>
-      <div style="padding: 8px 64px">
-        <project-menu
-          :project-id="projectId"
-          @project:switch="(pid) => emit('project:switch', pid)"
-        />
+      <div v-if="!session.editorLock">
+        <div style="padding: 8px 64px">
+          <project-menu />
+        </div>
       </div>
       <q-space />
       <div>
@@ -51,12 +50,7 @@
 import AccountProfileMenu from './account/AccountProfileMenu.vue';
 import AppButton from 'components/application/controls/AppButton.vue';
 import ProjectMenu from 'components/application/project/ProjectMenu.vue';
+import { useSessionStore } from 'stores/session-store';
 
-defineProps<{
-  projectId: string | undefined;
-}>();
-
-const emit = defineEmits<{
-  (e: 'project:switch', projectId: string): void;
-}>();
+const session = useSessionStore();
 </script>

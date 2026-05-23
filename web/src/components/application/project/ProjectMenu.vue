@@ -16,13 +16,13 @@
       :separator="session.projects.length > 0 ? 'below' : undefined"
       @click="createProject"
     />
-    <app-menu-item label="Eigene Projekte" caption />
+    <app-menu-item label="Eigene Projekte" caption v-if="_ownProjects.length > 0" />
     <app-menu-item
       v-for="project in _ownProjects"
       :key="project.id"
       :label="project.data.name"
-      :checked="project.id === props.projectId"
-      :disabled="project.id === props.projectId"
+      :checked="project.id === _selectedProjectId"
+      :disabled="project.id === _selectedProjectId"
       show-empty-left-icon
       show-empty-right-icon
       @click="switchProject(project.id)"
@@ -56,17 +56,9 @@ const i18n = useI18n();
 const router = useRouter();
 const runTask = useRunTask();
 
-const props = defineProps<{
-  projectId: string | undefined;
-}>();
-
-const emit = defineEmits<{
-  (e: 'project:switch', projectId: string): void;
-}>();
-
 const _projectLabel = computed(() =>
-  props.projectId
-    ? session.projects.find((p) => p.id === props.projectId)?.data.name
+  session.project?.id
+    ? session.project.data.name
     : i18n.t('project.menu.noProjectSelected')
 );
 
@@ -75,6 +67,8 @@ const _ownProjects = computed(() =>
     .filter((p) => p.isOwnProject())
     .sort((a, b) => a.data.name.localeCompare(b.data.name))
 );
+
+const _selectedProjectId = computed(() => session.project?.id);
 
 function createProject(): void {
   router.push('/project/editor/create');
@@ -87,7 +81,6 @@ function switchProject(projectId: string): void {
       session.account.data.state.lastProject = projectId;
       await session.account.save();
     }
-    emit('project:switch', projectId);
   });
 }
 </script>

@@ -14,5 +14,6 @@ export interface IAccountData extends IDocumentData {
   state: {
     active: boolean;
     lastLogin?: Date;
+    lastProject?: string;
   }
 }

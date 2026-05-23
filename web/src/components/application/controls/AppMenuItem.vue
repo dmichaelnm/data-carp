@@ -7,7 +7,7 @@
     @click="emit('click')"
   >
     <q-item-section side>
-      <q-icon v-if="icon || showEmptyIcon" :name="icon" size="xs" />
+      <q-icon v-if="icon || showEmptyLeftIcon" :name="icon" size="xs" />
     </q-item-section>
     <q-item-section>
       <q-item-label :class="`menu-item-label-${_labelStyle}`">{{
@@ -17,6 +17,11 @@
     <q-item-section side>
       <q-icon v-if="hasSubMenu" name="arrow_right" size="xs" />
       <q-icon v-if="checked" name="check" size="xs" />
+      <q-icon
+        v-if="showEmptyRightIcon && !hasSubMenu && !checked"
+        name=""
+        size="xs"
+      />
     </q-item-section>
     <slot />
   </q-item>
@@ -34,7 +39,14 @@
 }
 
 .menu-item-label-caption {
+  font-size: 0.8rem;
+  color: $text-color-hint-light;
+  text-align: center;
 }
+.body--dark .menu-item-label-caption {
+  color: $text-color-hint-dark;
+}
+
 .menu-item-label-disabled {
 }
 </style>
@@ -51,7 +63,8 @@ const props = defineProps<{
   hasSubMenu?: boolean;
   icon?: string;
   separator?: TSeparatorPosition;
-  showEmptyIcon?: boolean;
+  showEmptyLeftIcon?: boolean;
+  showEmptyRightIcon?: boolean;
 }>();
 
 const emit = defineEmits<{

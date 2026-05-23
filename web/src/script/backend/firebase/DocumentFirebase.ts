@@ -48,6 +48,8 @@ export abstract class DocumentFirebase<D extends IDocumentData>
     this.isNew = isNew;
   }
 
+  async onBeforeSave(): Promise<void> {}
+
   async save(): Promise<void> {
     if (this.isNew) {
       this.data.meta = {
@@ -56,6 +58,7 @@ export abstract class DocumentFirebase<D extends IDocumentData>
           at: new Date(Date.now()),
         },
       };
+      await this.onBeforeSave();
       if (this.id === '') {
         const coll = collection(firebaseStore, this.type);
         const docRef = await addDoc(coll, this.data);

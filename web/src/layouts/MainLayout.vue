@@ -1,6 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="layout">
-    <app-header />
+    <app-header
+      :project-id="projectId"
+      @project:switch="(pid) => (projectId = pid)"
+    />
     <app-footer :show-privacy-policy="true" />
     <q-page-container>
       <router-view />
@@ -20,7 +23,7 @@
 </style>
 
 <script setup lang="ts">
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
@@ -34,20 +37,41 @@ const i18n = useI18n();
 const router = useRouter();
 const session = useSessionStore();
 
+const projectId = ref<string | undefined>();
+
 onBeforeMount(() => {
-  Backend.accountService.onAuthenticationStateChanged((account) => {
+  Backend.accountService.onAuthenticationStateChanged(async (account) => {
     if (account === null) {
-      router.push('/auth/login');
+      await router.push('/auth/login');
     } else {
-      quasar.dark.set(account.data.preference.darkMode);
-      quasar.cookies.set('darkMode', quasar.dark.isActive.toString(), {
-        expires: 365,
-      });
-      i18n.locale.value = account.data.preference.language;
-      quasar.cookies.set('language', i18n.locale.value, {
-        expires: 365,
-      });
-      session.account = account;
+      quasar.loading.show();
+      try {
+        quasar.dark.set(account.data.preference.darkMode);
+        quasar.cookies.set('darkMode', quasar.dark.isActive.toString(), {
+          expires: 365,
+        });
+        i18n.locale.value = account.data.preference.language;
+        quasar.cookies.set('language', i18n.locale.value, {
+          expires: 365,
+        });
+        session.account = account;
+        session.projects = await Backend.projectService.loadProjects();
+        let pid = session.account.data.state.lastProject;
+        if (!session.projects.find((p) => p.id === pid)) {
+          pid =
+            session.projects.length > 0 ? session.projects[0].id : undefined;
+        }
+        projectId.value = pid;
+        if (pid !== session.account.data.state.lastProject) {
+          session.account.data.state.lastProject = pid;
+          await session.account.save();
+        }
+        if (pid !== undefined) {
+          session.project = await Backend.projectService.loadProject(pid);
+        }
+      } finally {
+        quasar.loading.hide();
+      }
     }
   });
 });

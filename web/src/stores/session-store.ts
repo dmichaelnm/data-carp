@@ -6,6 +6,7 @@ export const useSessionStore = defineStore('session', {
   state: () => ({
     account: null as IAccount | null,
     projects: [] as IProject[],
+    project: null as IProject | null,
   }),
   getters: {},
   actions: {},

@@ -112,7 +112,7 @@ export default {
   },
   project: {
     menu: {
-      noProjects: 'Keine Projekte vorhanden',
+      noProjectSelected: 'Kein Projekt ausgewählt',
       create: 'Projekt erstellen',
     },
     label: {

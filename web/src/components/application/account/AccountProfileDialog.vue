@@ -14,15 +14,7 @@
       <div class="row q-col-gutter-x-md">
         <div class="col-auto">
           <div class="text-center">
-            <q-avatar size="128px">
-              <q-img
-                v-if="photoURL"
-                :src="photoURL"
-                referrerpolicy="no-referrer"
-                style="width: 128px; height: 128px"
-              />
-              <q-icon v-else name="account_circle" size="128px" />
-            </q-avatar>
+            <account-profile-picture :photo-url="photoURL" :size="128" />
           </div>
           <div class="text-center">
             <app-button
@@ -78,6 +70,7 @@ import { TDialogButton } from 'src/script/ui/types';
 import AppDialog from '../controls/AppDialog.vue';
 import AppInput from 'src/components/application/controls/AppInput.vue';
 import AppButton from 'src/components/application/controls/AppButton.vue';
+import AccountProfilePicture from 'components/application/account/AccountProfilePicture.vue';
 
 const session = useSessionStore();
 

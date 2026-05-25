@@ -13,7 +13,7 @@
           </div>
           <q-separator />
           <q-scroll-area class="editor-body">
-            <div class="q-col-gutter-y-md editor-slot">
+            <div class="q-col-gutter-y-sm editor-slot">
               <div class="row q-col-gutter-x-md">
                 <div class="col-3">
                   <app-input
@@ -28,6 +28,41 @@
                     v-model="description"
                     :label="$t('label.description')"
                   />
+                </div>
+              </div>
+              <!-- Single Tab Page -->
+              <div class="row" v-if="tabs.length === 1">
+                <div class="col">
+                  <slot :name="`tab-${tabs[0]}`" />
+                </div>
+              </div>
+              <!-- Multi Tab Page -->
+              <div class="row" v-if="tabs.length > 1">
+                <div class="col">
+                  <q-tabs
+                    v-model="tab"
+                    active-color="primary"
+                    align="left"
+                    dense
+                    no-caps
+                  >
+                    <q-tab
+                      v-for="tab in tabs"
+                      :key="tab"
+                      :name="tab"
+                      :label="
+                        tab !== 'attributes'
+                          ? $t(`${scope}.editor.tab.${tab}.name`)
+                          : $t('label.attributes')
+                      "
+                    />
+                  </q-tabs>
+                  <q-tab-panels v-model="tab" keep-alive>
+                    <q-tab-panel v-for="tab in tabs" :key="tab" :name="tab">
+                      <slot v-if="tab !== 'attributes'" :name="`tab-${tab}`" />
+                      <tab-attributes v-if="tab === 'attributes'" />
+                    </q-tab-panel>
+                  </q-tab-panels>
                 </div>
               </div>
             </div>
@@ -99,6 +134,19 @@
 .editor-buttons {
   padding: 16px;
 }
+
+.q-tab-panel {
+  color: $text-color-light;
+  background-color: transparent;
+  padding: 16px 0;
+}
+.body--dark .q-tab-panel {
+  color: $text-color-dark;
+}
+
+.q-dark {
+  background-color: transparent;
+}
 </style>
 
 <script setup lang="ts">
@@ -110,6 +158,7 @@ import { useSessionStore } from 'stores/session-store';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AppInput from 'components/application/controls/AppInput.vue';
+import TabAttributes from 'components/application/attributes/TabAttributes.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -118,9 +167,11 @@ const session = useSessionStore();
 
 const name = ref('');
 const description = ref('');
+const tab = ref('');
 
 const props = defineProps<{
   scope: EDocumentType;
+  tabs: string[];
   submitHandler: (name: string, description: string | null) => Promise<string>;
 }>();
 
@@ -131,7 +182,12 @@ const emit = defineEmits<{
 const _mode = computed(() => route.params.mode as string);
 
 onBeforeMount(() => {
-  session.editorLock = true;
+  if (!session.account) {
+    router.push('/');
+  } else {
+    session.editorLock = true;
+    tab.value = props.tabs.length > 0 ? props.tabs[0] : '';
+  }
 });
 
 onUnmounted(() => {

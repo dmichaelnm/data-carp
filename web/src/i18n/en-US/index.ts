@@ -3,18 +3,20 @@ export default {
     title: 'Data Carp',
   },
   button: {
+    add: 'Add',
     back: 'Back',
+    cancel: 'Cancel',
     close: 'Close',
     darkMode: 'Dark Mode',
     language: 'Language',
     lightMode: 'Light Mode',
-    signOut: 'Sign Out',
-    profile: 'Profile',
     okay: 'Okay',
-    cancel: 'Abbrechen',
-    save: 'Save',
-    uploadPhoto: 'Upload Photo',
+    profile: 'Profile',
+    remove: 'Remove',
     removePhoto: 'Remove Photo',
+    save: 'Save',
+    signOut: 'Sign Out',
+    uploadPhoto: 'Upload Photo',
   },
   dialog: {
     unexpected: {
@@ -22,11 +24,19 @@ export default {
       message:
         'An unexpected error occurred. For more details, please see the details.',
     },
+    accountSelection: {
+      title: 'Select Account',
+      message:
+        'Enter the email address of the account you would like to use here.',
+      applySelf: 'Apply self',
+      unknownAccount: 'Unknown Email Address',
+    },
   },
   error: {
     inputEmpty: 'The input field cannot be empty.',
   },
   label: {
+    attributes: 'Additional Attributes',
     confirmPassword: 'Confirm Password',
     description: 'Description (optional)',
     details: 'Details',
@@ -107,6 +117,10 @@ export default {
     },
   },
   project: {
+    role: {
+      owner: 'Owner',
+      visitor: 'Visitor',
+    },
     menu: {
       noProjectSelected: 'No Project Selected',
       create: 'Create Project',
@@ -123,6 +137,36 @@ export default {
           'and accessibility of the project. To create a new project, you only need to specify the name of the ' +
           'project here. All other properties, such as a description or access rights, can also be defined later. ' +
           'As the creator of the project, you are also automatically designated as the owner of the project.',
+      },
+      tab: {
+        access: {
+          name: 'Access Rights',
+          owner: {
+            message:
+              'This is where the owner of the project is shown. The owner has full control over the project and ' +
+              'is also the only user who can assign a new project manager or delete the project. The ' +
+              'owner can also be the project manager.',
+            label: 'Owner of the Project',
+          },
+          manager: {
+            message:
+              'In addition to the owner, the project manager is the only user who can manage the access rights of the ' +
+              'project. However, they cannot remove themselves as project manager, and they also cannot ' +
+              'delete the project.',
+            label: 'Project Manager',
+          },
+          member: {
+            message:
+              'Here, you can grant or revoke access to this project for additional users. Each user is assigned a ' +
+              'predefined role that determines their specific permissions.',
+            messageEmptyTable:
+              'No other users have been granted access to the project yet.',
+            header: {
+              displayName: 'User Name',
+              role: 'Role',
+            },
+          },
+        },
       },
     },
   },

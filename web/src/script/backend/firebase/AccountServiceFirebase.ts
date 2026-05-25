@@ -9,17 +9,19 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 import {
+  deleteObject,
+  getDownloadURL,
   ref as storageRef,
   uploadBytes,
-  getDownloadURL,
-  deleteObject,
 } from 'firebase/storage';
-import { firebaseAuth, firebaseStorage } from 'boot/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { firebaseAuth, firebaseStorage, firebaseStore } from 'boot/firebase';
 import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
 import { AccountFirebase } from 'src/script/backend/firebase/AccountFirebase';
 import { FirebaseError } from 'firebase/app';
+import { EDocumentType } from 'src/script/backend/api/IDocument';
 
 export class AccountServiceFirebase implements IAccountService {
   onAuthenticationStateChanged(callback: (account: IAccount | null) => void) {
@@ -77,6 +79,24 @@ export class AccountServiceFirebase implements IAccountService {
     const account = AccountFirebase.createAccount(data, credentials.user.uid);
     await account.save();
     return account;
+  }
+
+  async findAccount(email: string): Promise<IAccount | undefined> {
+    const q = query(
+      collection(firebaseStore, 'account'),
+      where('profile.email', '==', email)
+    );
+    const docs = await getDocs(q);
+    if (docs.size > 0) {
+      const doc = docs.docs[0];
+      return new AccountFirebase(
+        doc.id,
+        EDocumentType.Account,
+        doc.data() as IAccountData,
+        false
+      );
+    }
+    return undefined;
   }
 
   async getAccount(

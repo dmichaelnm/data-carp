@@ -62,6 +62,34 @@ body.body--dark {
   background-color: $border-color-dark;
 }
 
+.q-table__container {
+  background-color: transparent;
+}
+
+.q-table th {
+  border-bottom: 1px solid $border-color-light;
+}
+
+.q-table--dark .q-table th {
+  border-bottom: 1px solid $border-color-dark;
+}
+
+.q-table--horizontal-separator tbody tr:not(:last-child) > td {
+  border-bottom: 1px solid $border-color-light;
+}
+
+.body--dark .q-table--horizontal-separator tbody tr:not(:last-child) > td {
+  border-bottom: 1px solid $border-color-dark;
+}
+
+.q-table__bottom {
+  border-top: 1px solid $border-color-light;
+}
+
+.q-table--dark .q-table__bottom {
+  border-top: 1px solid $border-color-dark;
+}
+
 // --------------------------------------------------------------------------------
 
 .text-hint {

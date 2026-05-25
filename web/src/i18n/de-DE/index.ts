@@ -5,18 +5,20 @@ export default {
     title: 'Data Carp',
   },
   button: {
+    add: 'Hinzufügen',
     back: 'Zurück',
+    cancel: 'Abbrechen',
     close: 'Schließen',
     darkMode: 'Dunkler Modus',
     language: 'Sprache',
     lightMode: 'Heller Modus',
-    signOut: 'Abmelden',
-    profile: 'Profil',
     okay: 'Okay',
-    cancel: 'Abbrechen',
-    save: 'Speichern',
-    uploadPhoto: 'Foto hochladen',
+    profile: 'Profil',
+    remove: 'Entfernen',
     removePhoto: 'Foto entfernen',
+    save: 'Speichern',
+    signOut: 'Abmelden',
+    uploadPhoto: 'Foto hochladen',
   },
   dialog: {
     unexpected: {
@@ -24,11 +26,19 @@ export default {
       message:
         'Es ist ein unerwarteter Fehler aufgetreten. Genauere Informationen finden Sie in den Details.',
     },
+    accountSelection: {
+      title: 'Konto auswählen',
+      message:
+        'Geben Sie hier die Email-Adresse des Kontos ein, welches Sie verwenden möchten.',
+      applySelf: 'Selbst auswählen',
+      unknownAccount: 'Unbekannte Email-Adresse',
+    },
   },
   error: {
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
   },
   label: {
+    attributes: 'Zusätzliche Attribute',
     confirmPassword: 'Kennwort bestätigen',
     description: 'Beschreibung (optional)',
     details: 'Details',
@@ -111,12 +121,16 @@ export default {
     },
   },
   project: {
+    role: {
+      owner: 'Eigentümer',
+      visitor: 'Besucher',
+    },
     menu: {
       noProjectSelected: 'Kein Projekt ausgewählt',
       create: 'Projekt erstellen',
     },
     label: {
-      name: 'Name des Projekts'
+      name: 'Name des Projekts',
     },
     editor: {
       create: {
@@ -128,6 +142,37 @@ export default {
           'erstellen, müssen Sie hier lediglich den Namen des Projekts angeben. Alle weiteren Eigenschaften wie eine ' +
           'Beschreibung oder die Zugriffsrechte können auch später noch festgelegt werden. Sie als Ersteller des ' +
           'Projekts werden auch automatisch als Eigentümer des Projekts festgelegt.',
+      },
+      tab: {
+        access: {
+          name: 'Zugriffsrechte',
+          owner: {
+            message:
+              'Hier steht der Eigentümer des Projekts. Der Eigentümer hat volle Kontrolle über das Projekt und ' +
+              'kann auch als einziger Benutzer einen neuen Projektleiter zuweisen oder das Projekt löschen. Der ' +
+              'Eigentümer kann auch gleichzeitig der Projektleiter sein.',
+            label: 'Eigentümer des Projekts',
+          },
+          manager: {
+            message:
+              'Der Projektleiter ist neben dem Eigentümer der einzige Benutzer, der die Zugriffsrechte des ' +
+              'Projekts verwalten kann. Allerdings kann er nicht sich selbst als Projektleiter absetzen und er kann ' +
+              'auch das Projekt nicht löschen.',
+            label: 'Projektleiter',
+          },
+          member: {
+            message:
+              'Hier können Sie weiteren Benutzers Zugriff auf dieses Projekt gewähren bzw. diesen wieder entziehen. ' +
+              'Jeder Benutzer erhält dabei eine vordefinierte Rolle, die festlegt, welche Berechtigungen dieser Nutzer ' +
+              'hat.',
+            messageEmptyTable:
+              'Bisher wurde keinen weiteren Benutzern Zugriff auf das Projekt gewährt.',
+            header: {
+              displayName: 'Name des Benutzers',
+              role: 'Rolle',
+            },
+          },
+        },
       },
     },
   },

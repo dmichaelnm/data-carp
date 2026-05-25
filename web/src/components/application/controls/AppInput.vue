@@ -15,7 +15,11 @@
     outlined
     stack-label
     @update:model-value="(value) => (_modelValue = value)"
-  />
+  >
+    <template #append>
+      <slot name="append"></slot>
+    </template>
+  </q-input>
 </template>
 
 <script setup lang="ts">

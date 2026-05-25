@@ -1,7 +1,10 @@
+import { QTableColumn } from 'quasar';
+
 export type TColorName =
   | 'primary'
   | 'frame-background'
   | 'button-icon-color'
+  | 'button-icon-disabled-color'
   | 'text-color';
 export type TButtonType = 'button' | 'submit' | 'reset';
 export type TButtonStyle = 'push' | 'link' | 'icon';
@@ -21,4 +24,15 @@ export type TSelectOption = {
   icon?: string;
   separator?: TSeparatorPosition;
   translate?: boolean;
+};
+
+export enum ETableColumnType {
+  Avatar = 'avatar',
+  Text = 'text',
+}
+
+export type TTableColumn = QTableColumn & {
+  type: ((row: Record<string, unknown>) => ETableColumnType) | ETableColumnType;
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+  width?: number;
 };

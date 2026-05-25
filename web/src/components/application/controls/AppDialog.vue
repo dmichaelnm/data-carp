@@ -119,8 +119,7 @@ function onButtonClick(button: TDialogButton): void {
     if (props.closeHandler) {
       props.closeHandler(button);
     }
-    appDialogRef.value?.hide();
-    emit('dialog:closed', button.value);
+    close(button.value);
   }
 }
 
@@ -129,8 +128,14 @@ async function onSubmit(): Promise<void> {
     const submitButton = _buttons.value.find(
       (button) => button.type === 'submit'
     );
-    appDialogRef.value?.hide();
-    emit('dialog:closed', submitButton?.value as string);
+    close(submitButton?.value as string);
   }
 }
+
+function close(value: string): void {
+  emit('dialog:closed', value);
+  appDialogRef.value?.hide();
+}
+
+defineExpose({ close: close });
 </script>

@@ -8,6 +8,7 @@
     :round="_buttonStyle === 'icon'"
     :to="to"
     :style="_style"
+    :disable="disabled"
     dense
     no-caps
     @click="emit('click')"
@@ -56,6 +57,7 @@ const props = defineProps<{
   tooltip?: string;
   type?: TButtonType | undefined;
   color?: TColorName | string | undefined;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -68,11 +70,13 @@ const _style = computed(() => {
     (props.icon ? colors('button-icon-color') : colors('primary'));
   if (_buttonStyle.value === 'push') {
     return {
-      backgroundColor: color,
+      backgroundColor: props.disabled
+        ? colors('button-icon-disabled-color')
+        : color,
     };
   } else {
     return {
-      color: color,
+      color: props.disabled ? colors('button-icon-disabled-color') : color,
     };
   }
 });

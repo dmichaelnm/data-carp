@@ -14,6 +14,8 @@ export interface IAccountService {
     language: string
   ): Promise<IAccount>;
 
+  findAccount(email: string): Promise<IAccount | undefined>;
+
   getAccount(
     id: string,
     accountExpected: boolean

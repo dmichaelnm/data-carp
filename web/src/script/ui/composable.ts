@@ -10,6 +10,8 @@ const Colors: Record<string, string> = {
   'frame-background-dark': '#202020',
   'button-icon-color-light': '#707070',
   'button-icon-color-dark': '#909090',
+  'button-icon-disabled-color-light': '#C0C0C0',
+  'button-icon-disabled-color-dark': '#404040',
   'text-color-light': '#404040',
   'text-color-dark': '#C0C0C0',
 };

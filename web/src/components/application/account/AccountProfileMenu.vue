@@ -2,13 +2,11 @@
   <account-profile-dialog v-model="profileDialogVisible" />
 
   <app-button
-    :icon="_photoUrl ? undefined : 'account_circle'"
     button-style="icon"
     :tooltip="session.account?.getDisplayName()"
+    color="button-icon-color"
   >
-    <q-avatar v-if="_photoUrl">
-      <q-img :src="_photoUrl" referrerpolicy="no-referrer" />
-    </q-avatar>
+    <account-profile-picture :account="session.account" />
     <q-menu anchor="bottom right" self="top right" style="width: 225px">
       <q-list>
         <app-menu-item
@@ -56,13 +54,14 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useRunTask } from 'src/script/ui/composable';
 import { computed, ref } from 'vue';
 import { useSessionStore } from 'src/stores/session-store';
 import { languageOptions } from 'src/script/ui/options';
 import AppButton from 'src/components/application/controls/AppButton.vue';
 import AppMenuItem from 'src/components/application/controls/AppMenuItem.vue';
 import AccountProfileDialog from './AccountProfileDialog.vue';
-import { useRunTask } from 'src/script/ui/composable';
+import AccountProfilePicture from 'components/application/account/AccountProfilePicture.vue';
 
 const i18n = useI18n();
 const quasar = useQuasar();
@@ -77,8 +76,6 @@ const _modeIcon = computed(() =>
 const _modeLabel = computed(() =>
   quasar.dark.isActive ? 'button.lightMode' : 'button.darkMode'
 );
-
-const _photoUrl = computed(() => session.account?.data.profile.photoURL);
 
 function toggleDarkMode(): void {
   quasar.dark.toggle();

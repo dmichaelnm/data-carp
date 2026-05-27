@@ -1,5 +1,8 @@
 export enum EProjectMemberRole {
   Owner = 'owner',
+  Manager = 'manager',
+  Maintainer = 'maintainer',
+  Developer = 'developer',
   Visitor = 'visitor',
 }
 

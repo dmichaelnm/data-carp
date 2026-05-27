@@ -1,5 +1,6 @@
-import { TSelectOption } from 'src/script/ui/types';
 import { flagDE, flagUS } from 'quasar-extras-svg-icons/country-flag-icons';
+import { TSelectOption } from 'src/script/ui/types';
+import { EProjectMemberRole } from 'src/script/backend/api/IProjectMember';
 
 export const languageOptions: TSelectOption[] = [
   { value: 'en-US', label: 'language.enUS', icon: flagUS },
@@ -19,3 +20,9 @@ export function getDefaultLanguage(): string {
   }
   return option.value;
 }
+
+export const projectRoleOptions: TSelectOption[] = [
+  { value: EProjectMemberRole.Maintainer, label: 'project.role.maintainer' },
+  { value: EProjectMemberRole.Developer, label: 'project.role.developer' },
+  { value: EProjectMemberRole.Visitor, label: 'project.role.visitor' },
+];

@@ -119,6 +119,9 @@ export default {
   project: {
     role: {
       owner: 'Owner',
+      manager: 'Manager',
+      maintainer: 'Maintainer',
+      developer: 'Developer',
       visitor: 'Visitor',
     },
     menu: {
@@ -154,6 +157,7 @@ export default {
               'project. However, they cannot remove themselves as project manager, and they also cannot ' +
               'delete the project.',
             label: 'Project Manager',
+            isAlreadyMember: 'This account is already a project member.',
           },
           member: {
             message:
@@ -161,6 +165,9 @@ export default {
               'predefined role that determines their specific permissions.',
             messageEmptyTable:
               'No other users have been granted access to the project yet.',
+            isOwner: 'The user is already the owner.',
+            isManager: 'The user is already the project manager.',
+            isAlreadyMember: 'The user is already a project member.',
             header: {
               displayName: 'User Name',
               role: 'Role',

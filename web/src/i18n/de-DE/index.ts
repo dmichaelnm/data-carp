@@ -123,6 +123,9 @@ export default {
   project: {
     role: {
       owner: 'Eigentümer',
+      manager: 'Projektleiter',
+      maintainer: 'Maintainer',
+      developer: 'Entwickler',
       visitor: 'Besucher',
     },
     menu: {
@@ -159,6 +162,7 @@ export default {
               'Projekts verwalten kann. Allerdings kann er nicht sich selbst als Projektleiter absetzen und er kann ' +
               'auch das Projekt nicht löschen.',
             label: 'Projektleiter',
+            isAlreadyMember: 'Der Benutzer ist bereits ein Projektmitglied.',
           },
           member: {
             message:
@@ -167,6 +171,9 @@ export default {
               'hat.',
             messageEmptyTable:
               'Bisher wurde keinen weiteren Benutzern Zugriff auf das Projekt gewährt.',
+            isOwner: 'Der Benutzer ist bereits der Eigentümer.',
+            isManager: 'Der Benutzer ist bereits der Projektleiter.',
+            isAlreadyMember: 'Der Benutzer ist bereits ein Projektmitglied.',
             header: {
               displayName: 'Name des Benutzers',
               role: 'Rolle',

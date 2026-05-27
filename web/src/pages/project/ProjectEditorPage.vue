@@ -1,6 +1,7 @@
 <template>
   <account-selection-dialog
     v-model="dialogVisible"
+    :validation-handler="onValidateMember"
     @account:selected="onMemberSelected"
   />
   <app-editor
@@ -30,6 +31,7 @@
             <account-selection-field
               v-model="manager"
               :label="$t('project.editor.tab.access.manager.label')"
+              :validation-handler="onValidateManager"
             />
           </div>
         </div>
@@ -63,7 +65,8 @@
                 align: 'left',
                 name: 'role',
                 label: $t('project.editor.tab.access.member.header.role'),
-                type: ETableColumnType.Text,
+                type: ETableColumnType.Select,
+                options: projectRoleOptions,
                 field: (row: IProjectMember) => $t(`project.role.${row.role}`),
                 width: 150
               },
@@ -71,7 +74,7 @@
                 align: 'left',
                 name: 'description',
                 label: $t('label.description'),
-                type: ETableColumnType.Text,
+                type: ETableColumnType.Input,
                 field: (row: IProjectMember) => row.description
               }
             ]"
@@ -90,7 +93,9 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useSessionStore } from 'stores/session-store';
+import { projectRoleOptions } from 'src/script/ui/options';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
 import {
   EProjectMemberRole,
@@ -98,6 +103,8 @@ import {
 } from 'src/script/backend/api/IProjectMember';
 import { ETableColumnType } from 'src/script/ui/types';
 import { IAccount } from 'src/script/backend/api/IAccount';
+import { IProjectData } from 'src/script/backend/api/IProjectData';
+import { Backend } from 'src/script/backend/Backend';
 import AppEditor from 'components/application/AppEditor.vue';
 import AppTable from 'components/application/controls/AppTable.vue';
 import AccountSelectionField from 'components/application/account/AccountSelectionField.vue';
@@ -105,6 +112,7 @@ import AccountSelectionDialog from 'components/application/account/AccountSelect
 
 const session = useSessionStore();
 const route = useRoute();
+const i18n = useI18n();
 
 const dialogVisible = ref(false);
 const dialogCallback = ref<((commit: boolean) => void) | null>(null);
@@ -119,6 +127,7 @@ onBeforeMount(() => {
   if (_mode.value === 'create') {
     owner.value = session.account;
     manager.value = session.account;
+    members.value = [];
   }
 });
 
@@ -141,11 +150,56 @@ function onMemberSelected(account: IAccount): void {
   }
 }
 
+function onValidateManager(account: IAccount): string | null {
+  if (members.value.some((member) => member.id === account.id)) {
+    return i18n.t('project.editor.tab.access.manager.isAlreadyMember');
+  }
+  return null;
+}
+
+function onValidateMember(account: IAccount): string | null {
+  if (owner.value?.id === account.id) {
+    return i18n.t('project.editor.tab.access.member.isOwner');
+  }
+  if (manager.value?.id === account.id) {
+    return i18n.t('project.editor.tab.access.member.isManager');
+  }
+  if (members.value.some((member) => member.id === account.id)) {
+    return i18n.t('project.editor.tab.access.member.isAlreadyMember');
+  }
+  return null;
+}
+
 async function onSubmit(
   name: string,
   description: string | null
 ): Promise<string> {
-  console.log(name, description);
-  return '';
+  const data: IProjectData = {
+    name: name,
+    description:
+      description && description.trim().length > 0 ? description.trim() : null,
+    members: [
+      {
+        id: owner.value?.id as string,
+        role: EProjectMemberRole.Owner,
+        displayName: owner.value?.getDisplayName() as string,
+        photoURL: owner.value?.data.profile.photoURL ?? null,
+        description: null,
+      },
+      {
+        id: manager.value?.id as string,
+        role: EProjectMemberRole.Manager,
+        displayName: manager.value?.getDisplayName() as string,
+        photoURL: manager.value?.data.profile.photoURL ?? null,
+        description: null,
+      },
+      ...members.value,
+    ],
+  };
+  const project = Backend.projectService.createProject(data);
+  await project.save();
+  session.projects.push(project);
+  session.projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
+  return project.id;
 }
 </script>

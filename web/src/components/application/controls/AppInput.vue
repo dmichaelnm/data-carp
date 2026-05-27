@@ -10,9 +10,12 @@
     :error="error !== undefined && error !== null && error.trim().length > 0"
     :error-message="error"
     :readonly="readOnly"
+    :hide-bottom-space="hideBottomSpace"
+    ref="appInput"
     lazy-rules="ondemand"
     dense
-    outlined
+    :outlined="!borderless"
+    :borderless="borderless"
     stack-label
     @update:model-value="(value) => (_modelValue = value)"
   >
@@ -23,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { QInput } from 'quasar';
 
 type TModelValue = string | number | null;
 type TInputType =
@@ -41,6 +45,8 @@ type TInputType =
   | 'url';
 type TAutoComplete = 'current-password' | 'new-password' | 'username';
 
+const appInput = ref<QInput | null>(null);
+
 const props = defineProps<{
   modelValue: TModelValue;
   autoComplete?: TAutoComplete;
@@ -51,6 +57,8 @@ const props = defineProps<{
   spellcheck?: boolean;
   type?: TInputType;
   readOnly?: boolean;
+  hideBottomSpace?: boolean;
+  borderless?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -65,4 +73,10 @@ const _modelValue = computed({
 const _mandatory = computed(() => props.mandatory ?? false);
 const _spellcheck = computed(() => props.spellcheck ?? false);
 const _type = computed(() => props.type ?? 'text');
+
+function select() {
+  appInput.value?.select();
+}
+
+defineExpose({ select });
 </script>

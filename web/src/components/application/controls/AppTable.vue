@@ -18,7 +18,10 @@
           dense
           wrap-cells
         >
-          <template v-if="enableSelection" v-slot:body-cell-select="props">
+          <template
+            v-if="enableSelection && !readOnly"
+            v-slot:body-cell-select="props"
+          >
             <q-td :props="props">
               <q-radio
                 v-model="selectedRowIndex"
@@ -38,7 +41,7 @@
                 :class="`vertical-${col.verticalAlign ?? 'vertical-middle'}`"
               >
                 <!-- Text -->
-                <div v-if="getType(col, props.row) === ETableColumnType.Text">
+                <div v-if="getType(col, props.row) !== ETableColumnType.Avatar">
                   {{ props.value }}
                 </div>
                 <!-- Image URL -->
@@ -47,6 +50,67 @@
                   :photo-url="props.value"
                   :size="col.width ?? 32"
                 />
+                <!-- Text -->
+                <q-popup-edit
+                  v-if="
+                    !readOnly &&
+                    getType(col, props.row) === ETableColumnType.Input
+                  "
+                  v-model="props.row[col.name]"
+                  v-slot="scope"
+                  anchor="center middle"
+                  :ref="refPopupEditor(col, props.rowIndex)"
+                  @show="selectInputField(props.rowIndex, col)"
+                >
+                  <app-input
+                    v-model="scope.value"
+                    :label="col.label"
+                    :ref="refAppInput(col, props.rowIndex)"
+                    hide-bottom-space
+                    borderless
+                    @focusout="
+                      updateValue(
+                        props.rowIndex,
+                        props.row,
+                        col,
+                        scope.value,
+                        true
+                      )
+                    "
+                    @keyup.enter="hidePopupEditor(props.rowIndex, col)"
+                    @blur="hidePopupEditor(props.rowIndex, col)"
+                  />
+                </q-popup-edit>
+                <!-- Selection -->
+                <q-popup-edit
+                  v-if="
+                    !readOnly &&
+                    getType(col, props.row) === ETableColumnType.Select
+                  "
+                  v-model="props.row[col.name]"
+                  v-slot="scope"
+                  anchor="center middle"
+                  :ref="refPopupEditor(col, props.rowIndex)"
+                  @show="showSelectOptions(props.rowIndex, col)"
+                >
+                  <app-select
+                    v-model="scope.value"
+                    :options="col.options ?? []"
+                    :label="col.label"
+                    :ref="refAppSelect(col, props.rowIndex)"
+                    translate
+                    borderless
+                    @update:model-value="
+                      updateValue(
+                        props.rowIndex,
+                        props.row,
+                        col,
+                        scope.value,
+                        true
+                      )
+                    "
+                  />
+                </q-popup-edit>
               </q-td>
             </slot>
           </template>
@@ -88,10 +152,20 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ComponentPublicInstance, computed, reactive, ref } from 'vue';
+import { QPopupEdit } from 'quasar';
 import { ETableColumnType, TTableColumn } from 'src/script/ui/types';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AccountProfilePicture from 'components/application/account/AccountProfilePicture.vue';
+import AppSelect from 'components/application/controls/AppSelect.vue';
+import AppInput from 'components/application/controls/AppInput.vue';
+
+type TAppSelect = InstanceType<typeof AppSelect>;
+type TAppInput = InstanceType<typeof AppInput>;
+
+const appSelectRefs = reactive(<Record<string, TAppSelect>>{});
+const appInputRefs = reactive(<Record<string, TAppInput>>{});
+const popupEditorRefs = reactive(<Record<string, QPopupEdit>>{});
 
 const selectedRowIndex = ref(-1);
 
@@ -106,6 +180,13 @@ const props = defineProps<{
   rowsPerPage?: number;
   showRemoveButton?: boolean;
   enableSelection?: boolean;
+  readOnly?: boolean;
+  validationHandler?: (
+    rowIndex: number,
+    column: TTableColumn,
+    oldValue: unknown,
+    newValue: unknown
+  ) => unknown;
 }>();
 
 const emit = defineEmits<{
@@ -180,6 +261,74 @@ function onRemoveRow(): void {
   if (remove) {
     _modelValue.value.splice(selectedRowIndex.value, 1);
     selectedRowIndex.value--;
+  }
+}
+
+function refPopupEditor(
+  column: TTableColumn,
+  rowIndex: number
+): (el: QPopupEdit) => unknown {
+  return (el: QPopupEdit) => {
+    popupEditorRefs[`pe_${column.name}_${rowIndex}`] = el;
+  };
+}
+
+function refAppInput(column: TTableColumn, rowIndex: number) {
+  return (el: Element | ComponentPublicInstance | null) => {
+    const key = `ai_${column.name}_${rowIndex}`;
+    if (el) {
+      appInputRefs[`ai_${column.name}_${rowIndex}`] = el as TAppInput;
+    } else {
+      delete appInputRefs[key];
+    }
+  };
+}
+
+function refAppSelect(column: TTableColumn, rowIndex: number) {
+  return (el: Element | ComponentPublicInstance | null) => {
+    const key = `as_${column.name}_${rowIndex}`;
+    if (el) {
+      appSelectRefs[`as_${column.name}_${rowIndex}`] = el as TAppSelect;
+    } else {
+      delete appSelectRefs[key];
+    }
+  };
+}
+
+function selectInputField(rowIndex: number, column: TTableColumn): void {
+  const reference = appInputRefs[`ai_${column.name}_${rowIndex}`];
+  if (reference) {
+    reference.select();
+  }
+}
+
+function showSelectOptions(rowIndex: number, column: TTableColumn): void {
+  const reference = appSelectRefs[`as_${column.name}_${rowIndex}`];
+  if (reference) {
+    reference.showPopup();
+  }
+}
+
+function updateValue(
+  rowIndex: number,
+  row: Record<string, unknown>,
+  column: TTableColumn,
+  value: unknown,
+  hidePopup: boolean
+): void {
+  const oldValue = row[column.name];
+  row[column.name] = props.validationHandler
+    ? props.validationHandler(rowIndex, column, oldValue, value)
+    : value;
+  if (hidePopup) {
+    hidePopupEditor(rowIndex, column);
+  }
+}
+
+function hidePopupEditor(rowIndex: number, column: TTableColumn): void {
+  const reference = popupEditorRefs[`pe_${column.name}_${rowIndex}`];
+  if (reference) {
+    reference.hide();
   }
 }
 </script>

@@ -28,10 +28,13 @@ export type TSelectOption = {
 
 export enum ETableColumnType {
   Avatar = 'avatar',
+  Input = 'input',
+  Select = 'select',
   Text = 'text',
 }
 
 export type TTableColumn = QTableColumn & {
+  options?: TSelectOption[];
   type: ((row: Record<string, unknown>) => ETableColumnType) | ETableColumnType;
   verticalAlign?: 'top' | 'middle' | 'bottom';
   width?: number;

@@ -3,11 +3,13 @@
     :model-value="_modelValue"
     :label="label"
     :options="options"
+    ref="appSelect"
     map-options
     emit-value
     dense
     options-dense
-    outlined
+    :outlined="!borderless"
+    :borderless="borderless"
     stack-label
     @update:model-value="(value) => (_modelValue = value)"
   >
@@ -53,16 +55,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { QSelect } from 'quasar';
 import { TSelectOption } from 'src/script/ui/types';
 
 type TModelValue = string | null;
+
+const appSelect = ref<QSelect | null>(null);
 
 const props = defineProps<{
   label?: string;
   modelValue: TModelValue;
   options: TSelectOption[];
   translate?: boolean;
+  borderless?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -81,4 +87,10 @@ const _showOptionIcon = computed(() =>
 const _selectedOption = computed(() =>
   props.options.find((option) => option.value === _modelValue.value)
 );
+
+function showPopup() {
+  appSelect.value?.showPopup();
+}
+
+defineExpose({ showPopup });
 </script>

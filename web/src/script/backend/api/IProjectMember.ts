@@ -4,6 +4,7 @@ export enum EProjectMemberRole {
   Maintainer = 'maintainer',
   Developer = 'developer',
   Visitor = 'visitor',
+  None = 'none',
 }
 
 export interface IProjectMember {

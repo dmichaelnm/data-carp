@@ -1,4 +1,4 @@
-import { DocumentFirebase } from 'src/script/backend/firebase/DocumentFirebase';
+import { DocumentFirebase } from 'src/script/backend/impl/firebase/DocumentFirebase';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { EDocumentType } from 'src/script/backend/api/IDocument';

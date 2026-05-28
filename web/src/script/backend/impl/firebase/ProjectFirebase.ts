@@ -1,16 +1,32 @@
-import { ProjectDocumentFirebase } from 'src/script/backend/firebase/ProjectDocumentFirebase';
-import { IProjectDataFirebase } from 'src/script/backend/firebase/IProjectDataFirebase';
 import {
   EProjectMemberRole,
   IProjectMember,
 } from 'src/script/backend/api/IProjectMember';
 import { firebaseAuth } from 'boot/firebase';
+import { IAccount } from 'src/script/backend/api/IAccount';
+import { Project } from 'src/script/backend/impl/Project';
 
-export class ProjectFirebase extends ProjectDocumentFirebase<IProjectDataFirebase> {
+export class ProjectFirebase extends Project {
   getOwner(): IProjectMember {
     return this.data.members.find(
       (m) => m.role === EProjectMemberRole.Owner
     ) as IProjectMember;
+  }
+
+  getRole(account: IAccount): EProjectMemberRole {
+    const roles = this.data.members
+      .filter((m) => m.id === account.id)
+      .map((m) => m.role);
+    if (roles.length === 0) {
+      return EProjectMemberRole.None;
+    }
+    if (roles.length === 1) {
+      return roles[0];
+    }
+    if (roles.includes(EProjectMemberRole.Owner)) {
+      return EProjectMemberRole.Owner;
+    }
+    return EProjectMemberRole.Manager;
   }
 
   isOwnProject(): boolean {

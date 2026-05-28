@@ -127,6 +127,10 @@ export default {
     menu: {
       noProjectSelected: 'No Project Selected',
       create: 'Create Project',
+      edit: 'Edit Current Project',
+      delete: 'Delete Current Project',
+      ownProjects: 'Own Projects',
+      membershipProjects: 'Membership Projects',
     },
     label: {
       name: 'Project Name',

@@ -8,10 +8,10 @@ import {
 } from 'firebase/firestore';
 import { IProjectService } from 'src/script/backend/api/IProjectService';
 import { IProject } from 'src/script/backend/api/IProject';
-import { ProjectFirebase } from 'src/script/backend/firebase/ProjectFirebase';
+import { ProjectFirebase } from 'src/script/backend/impl/firebase/ProjectFirebase';
 import { IProjectData } from 'src/script/backend/api/IProjectData';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
-import { IProjectDataFirebase } from 'src/script/backend/firebase/IProjectDataFirebase';
+import { IProjectDataFirebase } from 'src/script/backend/impl/firebase/IProjectDataFirebase';
 import { firebaseAuth, firebaseStore } from 'boot/firebase';
 
 export class ProjectServiceFirebase implements IProjectService {

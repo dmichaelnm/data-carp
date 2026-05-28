@@ -19,7 +19,7 @@ import { firebaseAuth, firebaseStorage, firebaseStore } from 'boot/firebase';
 import { IAccountService } from 'src/script/backend/api/IAccountService';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IAccountData } from 'src/script/backend/api/IAccountData';
-import { AccountFirebase } from 'src/script/backend/firebase/AccountFirebase';
+import { AccountFirebase } from 'src/script/backend/impl/firebase/AccountFirebase';
 import { FirebaseError } from 'firebase/app';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
 

@@ -7,10 +7,15 @@
     @click="emit('click')"
   >
     <q-item-section side>
-      <q-icon v-if="icon || showEmptyLeftIcon" :name="icon" size="xs" />
+      <q-icon
+        v-if="icon || showEmptyLeftIcon"
+        :name="icon"
+        size="xs"
+        :class="`menu-item-${_labelStyle}`"
+      />
     </q-item-section>
     <q-item-section>
-      <q-item-label :class="`menu-item-label-${_labelStyle}`">{{
+      <q-item-label :class="`menu-item-${_labelStyle}`">{{
         label
       }}</q-item-label>
     </q-item-section>
@@ -31,23 +36,27 @@
 <style lang="scss" scoped>
 @import 'src/css/quasar.variables.scss';
 
-.menu-item-label-normal {
+.menu-item-normal {
   color: $text-color-light;
 }
-.body--dark .menu-item-label-normal {
+.body--dark .menu-item-normal {
   color: $text-color-dark;
 }
 
-.menu-item-label-caption {
+.menu-item-caption {
   font-size: 0.8rem;
   color: $text-color-hint-light;
   text-align: center;
 }
-.body--dark .menu-item-label-caption {
+.body--dark .menu-item-caption {
   color: $text-color-hint-dark;
 }
 
-.menu-item-label-disabled {
+.menu-item-disabled {
+  color: $button-icon-disabled-color-light;
+}
+.body--dark .menu-item-disabled {
+  color: $button-icon-disabled-color-dark;
 }
 </style>
 

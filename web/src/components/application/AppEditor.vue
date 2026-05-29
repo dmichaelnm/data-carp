@@ -69,10 +69,36 @@
           </q-scroll-area>
           <q-separator />
           <div class="row items-center editor-buttons">
-            <div class="col-6 q-gutter-x-md">
+            <div class="col-4 q-gutter-x-xs">
               <slot name="buttons" />
             </div>
-            <div class="col-6 text-right q-gutter-x-md">
+            <div class="col-4 text-center q-gutter-x-md">
+              <div v-if="_mode !== 'create' && document" class="text-hint">
+                <div v-if="document.data.meta?.created">
+                  {{ $t('label.created') }}
+                  {{ document.data.meta?.created.by }}
+                  {{ $t('label.at') }}
+                  {{
+                    Backend.backendService.formatTimestamp(
+                      document.data.meta?.created.at,
+                      session.account as IAccount | undefined
+                    )
+                  }}
+                </div>
+                <div v-if="document.data.meta?.altered">
+                  {{ $t('label.altered') }}
+                  {{ document.data.meta?.altered.by }}
+                  {{ $t('label.at') }}
+                  {{
+                    Backend.backendService.formatTimestamp(
+                      document.data.meta?.altered.at,
+                      session.account as IAccount | undefined
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="col-4 text-right q-gutter-x-md">
               <app-button :label="$t('button.save')" type="submit" />
               <app-button
                 :label="$t('button.cancel')"
@@ -155,7 +181,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { useRunTask } from 'src/script/ui/composable';
 import { computed } from 'vue';
 import { useSessionStore } from 'stores/session-store';
+import { Backend } from 'src/script/backend/Backend';
 import { EDocumentType } from 'src/script/backend/api/IDocument';
+import { IProjectDocument } from 'src/script/backend/api/IProjectDocument';
+import { IProjectDocumentData } from 'src/script/backend/api/IProjectDocumentData';
+import { IAccount } from 'src/script/backend/api/IAccount';
 import AppButton from 'components/application/controls/AppButton.vue';
 import AppInput from 'components/application/controls/AppInput.vue';
 import TabAttributes from 'components/application/attributes/TabAttributes.vue';
@@ -172,7 +202,16 @@ const tab = ref('');
 const props = defineProps<{
   scope: EDocumentType;
   tabs: string[];
-  submitHandler: (name: string, description: string | null) => Promise<string>;
+  document?: IProjectDocument<IProjectDocumentData> | null;
+  createHandler: () => Promise<void>;
+  editHandler: (
+    document: IProjectDocument<IProjectDocumentData>
+  ) => Promise<void>;
+  submitHandler: (
+    mode: string,
+    name: string,
+    description: string | null
+  ) => Promise<string>;
 }>();
 
 const emit = defineEmits<{
@@ -187,6 +226,17 @@ onBeforeMount(() => {
   } else {
     session.editorLock = true;
     tab.value = props.tabs.length > 0 ? props.tabs[0] : '';
+    runTask(async () => {
+      if (_mode.value === 'create') {
+        name.value = '';
+        description.value = '';
+        await props.createHandler();
+      } else if (_mode.value === 'edit' && props.document) {
+        name.value = props.document.data.name;
+        description.value = props.document.data.description ?? '';
+        await props.editHandler(props.document);
+      }
+    });
   }
 });
 
@@ -197,6 +247,7 @@ onUnmounted(() => {
 function onSubmit(): void {
   runTask(async () => {
     const id = await props.submitHandler(
+      _mode.value,
       name.value.trim(),
       description.value.trim() === '' ? null : description.value
     );

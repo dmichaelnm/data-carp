@@ -36,8 +36,11 @@ export default {
     inputEmpty: 'The input field cannot be empty.',
   },
   label: {
+    altered: 'altered by',
+    at: 'at',
     attributes: 'Additional Attributes',
     confirmPassword: 'Confirm Password',
+    created: 'created by',
     description: 'Description (optional)',
     details: 'Details',
     email: 'Email Address',
@@ -144,6 +147,13 @@ export default {
           'and accessibility of the project. To create a new project, you only need to specify the name of the ' +
           'project here. All other properties, such as a description or access rights, can also be defined later. ' +
           'As the creator of the project, you are also automatically designated as the owner of the project.',
+      },
+      edit: {
+        title: 'Edit project',
+        message:
+          'Here you can edit the properties of the project. You can change the name of the project, the ' +
+          'description or the access rights. You can also change the project manager, as well as edit the ' +
+          'additional attributes of the project.',
       },
       tab: {
         access: {

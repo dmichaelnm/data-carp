@@ -7,6 +7,9 @@
   <app-editor
     :scope="EDocumentType.Project"
     :tabs="['access', 'attributes']"
+    :document="session.project"
+    :create-handler="onCreate"
+    :edit-handler="onEdit"
     :submit-handler="onSubmit"
   >
     <template #tab-access>
@@ -32,6 +35,7 @@
               v-model="manager"
               :label="$t('project.editor.tab.access.manager.label')"
               :validation-handler="onValidateManager"
+              :read-only="isManager"
             />
           </div>
         </div>
@@ -91,8 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useSessionStore } from 'stores/session-store';
 import { projectRoleOptions } from 'src/script/ui/options';
@@ -105,13 +108,15 @@ import { ETableColumnType } from 'src/script/ui/types';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { IProjectData } from 'src/script/backend/api/IProjectData';
 import { Backend } from 'src/script/backend/Backend';
+import { IProject } from 'src/script/backend/api/IProject';
+import { IProjectDocument } from 'src/script/backend/api/IProjectDocument';
+import { IProjectDocumentData } from 'src/script/backend/api/IProjectDocumentData';
 import AppEditor from 'components/application/AppEditor.vue';
 import AppTable from 'components/application/controls/AppTable.vue';
 import AccountSelectionField from 'components/application/account/AccountSelectionField.vue';
 import AccountSelectionDialog from 'components/application/account/AccountSelectionDialog.vue';
 
 const session = useSessionStore();
-const route = useRoute();
 const i18n = useI18n();
 
 const dialogVisible = ref(false);
@@ -120,16 +125,42 @@ const dialogCallback = ref<((commit: boolean) => void) | null>(null);
 const owner = ref<IAccount | null>(null);
 const manager = ref<IAccount | null>(null);
 const members = ref<IProjectMember[]>([]);
+const isManager = ref(true);
 
-const _mode = computed(() => route.params.mode as string);
+async function onCreate(): Promise<void> {
+  owner.value = session.account;
+  manager.value = session.account;
+  members.value = [];
+  isManager.value = false;
+}
 
-onBeforeMount(() => {
-  if (_mode.value === 'create') {
-    owner.value = session.account;
-    manager.value = session.account;
-    members.value = [];
-  }
-});
+async function onEdit(
+  document: IProjectDocument<IProjectDocumentData>
+): Promise<void> {
+  const project = document as IProject;
+  owner.value = (await Backend.accountService.getAccount(
+    project.getOwner().id,
+    true
+  )) as IAccount;
+  manager.value = (await Backend.accountService.getAccount(
+    project.getManager().id,
+    true
+  )) as IAccount;
+  members.value = project.data.members
+    .filter(
+      (member) =>
+        member.role !== EProjectMemberRole.Manager &&
+        member.role !== EProjectMemberRole.Owner
+    )
+    .map((member) => ({
+      id: member.id,
+      displayName: member.displayName,
+      photoURL: member.photoURL,
+      description: member.description,
+      role: member.role,
+    }));
+  isManager.value = project.getManager().id === session.account?.id;
+}
 
 function onAddMember(callback: (commit: boolean) => void): void {
   dialogCallback.value = callback;
@@ -171,6 +202,7 @@ function onValidateMember(account: IAccount): string | null {
 }
 
 async function onSubmit(
+  mode: string,
   name: string,
   description: string | null
 ): Promise<string> {
@@ -195,10 +227,19 @@ async function onSubmit(
       },
       ...members.value,
     ],
+    meta: session.project?.data.meta,
   };
-  const project = Backend.projectService.createProject(data);
+  let project: IProject;
+  if (mode === 'create') {
+    project = Backend.projectService.createProject(data);
+    session.projects.push(project);
+  } else {
+    project = session.project as IProject;
+    project.data = data;
+    const index = session.projects.findIndex((p) => p.id === project.id);
+    session.projects[index] = project;
+  }
   await project.save();
-  session.projects.push(project);
   session.projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
   return project.id;
 }

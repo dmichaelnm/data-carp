@@ -38,8 +38,11 @@ export default {
     inputEmpty: 'Das Eingabefeld darf nicht leer sein.',
   },
   label: {
+    altered: 'geändert von',
+    at: 'am',
     attributes: 'Zusätzliche Attribute',
     confirmPassword: 'Kennwort bestätigen',
+    created: 'erstellt von',
     description: 'Beschreibung (optional)',
     details: 'Details',
     email: 'Email-Adresse',
@@ -149,6 +152,13 @@ export default {
           'erstellen, müssen Sie hier lediglich den Namen des Projekts angeben. Alle weiteren Eigenschaften wie eine ' +
           'Beschreibung oder die Zugriffsrechte können auch später noch festgelegt werden. Sie als Ersteller des ' +
           'Projekts werden auch automatisch als Eigentümer des Projekts festgelegt.',
+      },
+      edit: {
+        title: 'Projekt bearbeiten',
+        message:
+          'Hier können Sie die Eigenschaften des Projekts bearbeiten. Sie können den Namen des Projekts, die ' +
+          'Beschreibung oder die Zugriffsrechte ändern. Sie können auch den Projektleiter wechseln. sowie die ' +
+          'zusätzlichen Attribute des Projekts bearbeiten.',
       },
       tab: {
         access: {

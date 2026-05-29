@@ -6,8 +6,13 @@ import { EDocumentType } from 'src/script/backend/api/IDocument';
 import { EPermission } from 'src/script/backend/api/IProjectDocument';
 import { EProjectMemberRole } from 'src/script/backend/api/IProjectMember';
 import { Project } from 'src/script/backend/impl/Project';
+import { IBackendService } from 'src/script/backend/api/IBackendService';
+import { BackendServiceFirebase } from 'src/script/backend/impl/firebase/BackendServiceFirebase';
 
 export class Backend {
+  static readonly backendService: IBackendService =
+    new BackendServiceFirebase();
+
   static readonly accountService: IAccountService =
     new AccountServiceFirebase();
 

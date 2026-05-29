@@ -23,6 +23,7 @@
         !session.hasPermission(EDocumentType.Project, EPermission.Edit)
       "
       icon="o_edit"
+      @click="editProject"
     />
     <app-menu-item
       :label="$t('project.menu.delete')"
@@ -47,7 +48,7 @@
       @click="switchProject(project.id)"
     />
     <app-menu-item
-      v-if="_ownProjects.length > 0"
+      v-if="_sharedProjects.length > 0"
       :label="$t('project.menu.membershipProjects')"
       caption
     />
@@ -113,6 +114,10 @@ const _selectedProjectId = computed(() => session.project?.id);
 
 function createProject(): void {
   router.push('/project/editor/create');
+}
+
+function editProject(): void {
+  router.push('/project/editor/edit');
 }
 
 function switchProject(projectId: string): void {

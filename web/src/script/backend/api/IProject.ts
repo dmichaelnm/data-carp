@@ -7,8 +7,9 @@ import {
 import { IAccount } from 'src/script/backend/api/IAccount';
 
 export interface IProject extends IProjectDocument<IProjectData> {
-  getOwner(): IProjectMember;
 
+  getManager(): IProjectMember;
+  getOwner(): IProjectMember;
   getRole(account: IAccount): EProjectMemberRole;
 
   isOwnProject(): boolean;

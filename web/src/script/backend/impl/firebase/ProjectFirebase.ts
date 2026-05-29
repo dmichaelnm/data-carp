@@ -1,18 +1,9 @@
-import {
-  EProjectMemberRole,
-  IProjectMember,
-} from 'src/script/backend/api/IProjectMember';
+import { EProjectMemberRole } from 'src/script/backend/api/IProjectMember';
 import { firebaseAuth } from 'boot/firebase';
 import { IAccount } from 'src/script/backend/api/IAccount';
 import { Project } from 'src/script/backend/impl/Project';
 
 export class ProjectFirebase extends Project {
-  getOwner(): IProjectMember {
-    return this.data.members.find(
-      (m) => m.role === EProjectMemberRole.Owner
-    ) as IProjectMember;
-  }
-
   getRole(account: IAccount): EProjectMemberRole {
     const roles = this.data.members
       .filter((m) => m.id === account.id)
